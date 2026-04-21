@@ -7,8 +7,8 @@
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
 #elif PLATFORM_WINDOWS
-#include <GL/glut.h>
 #include <GL/gl.h>
+#include <GL/glut.h>
 #endif
 
 #endif

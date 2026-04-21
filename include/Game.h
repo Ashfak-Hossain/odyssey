@@ -1,9 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-class Game
-{
-public:
+class Game {
+ public:
   void init();
   void update(float deltaTime);
   void render();
