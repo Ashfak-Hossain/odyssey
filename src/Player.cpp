@@ -1,14 +1,14 @@
-#include "Platform.h"
 #include "Player.h"
 
-Player::Player() : x(100), y(0), vx(0), vy(0), width(20), height(40), onGround(true) {}
+#include "Platform.h"
 
-void Player::update(float deltaTime)
-{
+Player::Player() : x(100), y(0), vx(0), vy(0), width(20), height(40), onGround(true) {
 }
 
-void Player::render()
-{
+void Player::update(float deltaTime) {
+}
+
+void Player::render() {
   glColor3f(1, 0, 0);
   glBegin(GL_QUADS);
   glVertex2f(x, y);
@@ -18,10 +18,14 @@ void Player::render()
   glEnd();
 }
 
-void Player::jump() {}
+void Player::jump() {
+}
 
-void Player::moveLeft() {}
+void Player::moveLeft() {
+}
 
-void Player::moveRight() {}
+void Player::moveRight() {
+}
 
-void Player::stopMoving() {}
+void Player::stopMoving() {
+}
