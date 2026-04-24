@@ -24,10 +24,15 @@ Player::Player()
 void Player::update(float deltaTime) {
   vy += GRAVITY * deltaTime;  // opengl default coord is downward.
 
-  // Update position based on velocity and deltaTime (velocity in pixel/sec * time in sec = distance
-  // in pixel)
+  // Update position based on velocity and deltaTime (velocity is in pixel/sec)
   x += vx * deltaTime;
   y += vy * deltaTime;
+
+  // left side of world
+  if (x < 0) {
+    x  = 0;
+    vx = 0;
+  }
 
   // Collision with the ground
   if (y <= GROUND_Y) {

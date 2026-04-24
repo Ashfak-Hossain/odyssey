@@ -1,10 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "Camera.h"
 #include "Player.h"
 
 class Game {
   Player player;
+  Camera camera;
   bool   keyPressed[256];
 
  public:

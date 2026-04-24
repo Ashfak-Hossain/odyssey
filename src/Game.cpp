@@ -13,10 +13,16 @@ Game::Game() {
 
 void Game::init() {
   glClearColor(0.4, 0.7, 1, 1);
+
+  // projection matrix
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
+
   glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
+
+  // modelview matrix
   glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 }
 
 void Game::update(float deltaTime) {
@@ -29,14 +35,21 @@ void Game::update(float deltaTime) {
     player.stopMoving();
   }
 
-  // update player in every update call
+  // update player in every game update call
   player.update(deltaTime);
+
+  // camera follows the player
+  camera.update(player.x, player.y);
 }
 
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT);
-  glLoadIdentity();
 
+  glLoadIdentity();  // reset modelview matrix
+
+  camera.applyTransform();
+
+  // simple line
   glColor3f(0.2f, 0.8f, 0.2f);
   glLineWidth(3.0f);
   glBegin(GL_LINES);
@@ -44,7 +57,10 @@ void Game::render() {
   glVertex2f(WINDOW_WIDTH, GROUND_Y);
   glEnd();
 
-  player.render();
+  player.render();  // render in world coordinate
+
+  //! Future UI render will be implemented here
+
   glutSwapBuffers();
 }
 

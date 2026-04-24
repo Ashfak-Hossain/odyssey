@@ -24,6 +24,12 @@ void Camera::update(float playerX, float playerY) {
   y = 0;
 }
 
+/**
+ * @brief apply the camera transform to the scene. Move the world in the opposite direction of the
+ * camera for the camera movement effect.
+ *
+ *@note should be called before rendering the objects.
+ */
 void Camera::applyTransform() const {
   glTranslatef(-x, -y, 0);
 }
