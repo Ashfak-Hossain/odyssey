@@ -5,9 +5,9 @@ class Player {
  public:
   Player();
 
-  float x, y;    // player position
-  float vx, vy;  // velocity
-  float height, width;
+  float x, y;           // bottom left corner of the player bounding box
+  float vx, vy;         // velocity in pixel/sec
+  float height, width;  // size of the player bounding box
   bool  onGround;
 
   void update(float deltaTime);
