@@ -6,7 +6,7 @@
 #ifdef PLATFORM_MACOS
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
-#elif PLATFORM_WINDOWS
+#elif defined(PLATFORM_WINDOWS)
 #include <GL/gl.h>
 #include <GL/glut.h>
 #endif
