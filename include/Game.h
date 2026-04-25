@@ -4,18 +4,18 @@
 #include <vector>
 
 #include "Camera.h"
+#include "InputManager.h"
+#include "Level.h"
+#include "Physics.h"
 #include "Player.h"
 #include "Tile.h"
 
 class Game {
-  Player player;
-  Camera camera;
-  bool   keyPressed[256];
-
-  std::vector<Tile> tiles;
-
-  void resolveCollisionX(Tile& tile);
-  void resolveCollisionY(Tile& tile);
+  Player       player;
+  Camera       camera;
+  Level        level;
+  InputManager input;
+  Physics      physics;
 
  public:
   Game();
