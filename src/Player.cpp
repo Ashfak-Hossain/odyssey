@@ -4,7 +4,7 @@
 
 Player::Player()
     : x(100),
-      y(GROUND_Y),
+      y(GROUND_SURFACE_Y),
       vx(0),
       vy(0),
       width(PLAYER_WIDTH),
@@ -12,40 +12,17 @@ Player::Player()
       onGround(true) {
 }
 
-/**
- * @brief Updates the player's position and velocity based on the elapsed time and gravity at
- * each frame.
- * @param deltaTime Time elapsed since the last update, in seconds.
- *
- * @note The player's vertical velocity is affected by gravity. Position is updated by current
- * velocity. If the player collides with the ground, position is reset to ground, vertical velocity
- * is set to 0, and the ground flag is on;
- */
-void Player::update(float deltaTime) {
+void Player::applyGravity(float deltaTime) {
   vy += GRAVITY * deltaTime;  // opengl default coord is downward.
+}
 
-  // Update position based on velocity and deltaTime (velocity is in pixel/sec)
-  x += vx * deltaTime;
-  y += vy * deltaTime;
-
-  // left side of world
-  if (x < 0) {
-    x  = 0;
-    vx = 0;
-  }
-
-  // Collision with the ground
-  if (y <= GROUND_Y) {
-    y        = GROUND_Y;
-    vy       = 0;
-    onGround = true;
-  } else {
-    onGround = false;
-  }
+Rect Player::getRect() const {
+  // x, y = bottom-left corner
+  return {x, y, width, height};
 }
 
 void Player::render() {
-  glColor3f(1, 0, 0);
+  glColor3f(1.0f, 0.3f, 0.1f);
   glBegin(GL_QUADS);
   glVertex2f(x, y);
   glVertex2f(x + width, y);

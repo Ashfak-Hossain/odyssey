@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "Rect.h"
+
 class Player {
  public:
   Player();
@@ -10,7 +12,15 @@ class Player {
   float height, width;  // size of the player bounding box
   bool  onGround;
 
-  void update(float deltaTime);
+  // returns the bounding box of the player
+  Rect getRect() const;
+
+  /**
+   * @brief handle gravity of the player.
+   * Game::update() will call this in every frame to apply gravity to the player.
+   * @param deltaTime time elapsed since last frame(in seconds)
+   */
+  void applyGravity(float deltaTime);
   void render();
   void jump();
   void moveLeft();

@@ -29,12 +29,18 @@ constexpr float MOVE_SPEED = 200.0f;   // horizontal movement speed (pixels/s)
 // ─────────────────────────────────────────────────────────────────────────────
 constexpr float PLAYER_WIDTH  = 20.0f;
 constexpr float PLAYER_HEIGHT = 40.0f;
-constexpr float GROUND_Y      = 0.0f;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Camera
 // ─────────────────────────────────────────────────────────────────────────────
 constexpr float CAMERA_PLAYER_OFFSET_X = 350.0f;   // position of the player from the left of screen
 constexpr float WORLD_WIDTH            = 3500.0f;  // width of the game world (not window width)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// World
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr float GROUND_Y           = 0.0f;
+constexpr float GROUND_TILE_HEIGHT = 20.0f;
+constexpr float GROUND_SURFACE_Y   = GROUND_Y + GROUND_TILE_HEIGHT;
 
 #endif
