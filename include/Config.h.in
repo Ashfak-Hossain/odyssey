@@ -43,4 +43,11 @@ constexpr float GROUND_Y           = 0.0f;
 constexpr float GROUND_TILE_HEIGHT = 20.0f;
 constexpr float GROUND_SURFACE_Y   = GROUND_Y + GROUND_TILE_HEIGHT;
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Parallax background
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr float BACKGROUND_LAYER_1_SPEED = 0.0f;
+constexpr float BACKGROUND_LAYER_2_SPEED = 0.2f;
+constexpr float BACKGROUND_LAYER_3_SPEED = 0.5f;
+
 #endif

@@ -26,4 +26,4 @@ class Game {
   void handleKeyDown(unsigned char key, int x, int y);
 };
 
-#endif
+#endif  // GAME_H

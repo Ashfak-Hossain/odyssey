@@ -28,4 +28,4 @@ class Player {
   void stopMoving();
 };
 
-#endif
+#endif  // PLAYER_H

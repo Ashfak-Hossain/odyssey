@@ -55,4 +55,4 @@ struct Rect {
   float overlapY(const Rect& other) const;
 };
 
-#endif
+#endif  // RECT_H
