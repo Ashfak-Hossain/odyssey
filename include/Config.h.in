@@ -1,12 +1,53 @@
+/**
+ * @file Config.h.in
+ * @brief Configuration header template for the Odyssey project.
+ * This file is processed by CMake to generate a Config.h file in the build dir.
+ * It defines constants used in the project.
+ */
+
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define PLATFORM_@PLATFORM_NAME@
+#define PLATFORM_@PLATFORM_NAME@ 1
 
-#if defined(PLATFORM_MACOS)
-    #define PLATFORM_MACOS 1
-#elif defined(PLATFORM_WINDOWS)
-    #define PLATFORM_WINDOWS 1
-#endif
+// ─────────────────────────────────────────────────────────────────────────────
+// Window settings
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr int  WINDOW_WIDTH   = 900;
+constexpr int  WINDOW_HEIGHT  = 700;
+constexpr char WINDOW_TITLE[] = "Odyssey";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Player physics settings
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr float GRAVITY    = -600.0f;  // gravity acceleration (pixels/s^2)
+constexpr float JUMP_FORCE = 320.0f;   // initial jump velocity (pixels/s)
+constexpr float MOVE_SPEED = 200.0f;   // horizontal movement speed (pixels/s)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Player
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr float PLAYER_WIDTH  = 20.0f;
+constexpr float PLAYER_HEIGHT = 40.0f;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Camera
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr float CAMERA_PLAYER_OFFSET_X = 350.0f;   // position of the player from the left of screen
+constexpr float WORLD_WIDTH            = 3500.0f;  // width of the game world (not window width)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// World
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr float GROUND_Y           = 0.0f;
+constexpr float GROUND_TILE_HEIGHT = 20.0f;
+constexpr float GROUND_SURFACE_Y   = GROUND_Y + GROUND_TILE_HEIGHT;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Parallax background
+// ─────────────────────────────────────────────────────────────────────────────
+constexpr float BACKGROUND_LAYER_1_SPEED = 0.0f;
+constexpr float BACKGROUND_LAYER_2_SPEED = 0.2f;
+constexpr float BACKGROUND_LAYER_3_SPEED = 0.5f;
 
 #endif
