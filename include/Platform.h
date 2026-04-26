@@ -11,4 +11,4 @@
 #include <GL/glut.h>
 #endif
 
-#endif
+#endif  // PLATFORM_H

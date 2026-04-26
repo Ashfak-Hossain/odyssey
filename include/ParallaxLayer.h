@@ -1,0 +1,4 @@
+#ifndef PARALLAXLAYER_H
+#define PARALLAXLAYER_H
+
+#endif  // PARALLAXLAYER_H

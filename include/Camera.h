@@ -19,4 +19,4 @@ class Camera {
   float worldToScreenY(float worldY) const;
 };
 
-#endif
+#endif  // CAMERA_H

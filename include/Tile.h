@@ -19,4 +19,4 @@ struct Tile {
   void render() const;
 };
 
-#endif
+#endif  // TILE_H
