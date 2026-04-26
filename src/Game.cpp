@@ -13,7 +13,10 @@ Game::Game() {
 
 /**
  * @brief Initialize the game.
- * This method will be called once at the start of the game.
+ * - this method will be called once at the start of the game.
+ * - set the clear color for the background.
+ * - set up the projection and modelview matrices.
+ * - load the level data.
  */
 void Game::init() {
   glClearColor(0.4, 0.7, 1, 1);  // sky blue background
@@ -34,6 +37,10 @@ void Game::init() {
 
 /**
  * @brief Update the game state every frame.
+ * - This methid will be called in every frame.
+ * - handles keyboard inputs.
+ * - updates physics of the player.
+ * - updates the camera position to follow the player.
  *
  * @param deltaTime Time elapsed since the last update(in seconds).
  */
@@ -55,7 +62,14 @@ void Game::update(float deltaTime) {
 }
 
 /**
- * @brief Render the game scene every frame.
+ * @brief Renders the complete game scene each frame.
+ * - This method will be called in every frame.
+ * - Clear thr screen.
+ * - Apply camera transform to the scene.
+ *    - This will move the world in the opposite direction of the camera.
+ * - Render the level in world coordinate.
+ * - Render the player in world coordinate.
+ * - Swap the buffers to display the rendered scene.
  */
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT);
