@@ -3,6 +3,7 @@
 #include <cstdlib>
 
 #include "Config.h"
+#include "Level.h"
 #include "Platform.h"
 
 /**
@@ -65,6 +66,7 @@ void Game::update(float deltaTime) {
  * @brief Renders the complete game scene each frame.
  * - This method will be called in every frame.
  * - Clear thr screen.
+ * - Render background.
  * - Apply camera transform to the scene.
  *    - This will move the world in the opposite direction of the camera.
  * - Render the level in world coordinate.
@@ -73,12 +75,13 @@ void Game::update(float deltaTime) {
  */
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT);
-  glLoadIdentity();  // reset modelview matrix
 
+  level.renderBackground(camera.x);  // render bg
+
+  glLoadIdentity();  // reset modelview matrix
   camera.applyTransform();
 
-  level.render();  // render tiles in world coordinate
-
+  level.render();   // render tiles in world coordinate
   player.render();  // render in world coordinate
 
   //! Future UI render will be implemented here
