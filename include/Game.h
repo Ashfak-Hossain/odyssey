@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "InputManager.h"
 #include "Level.h"
+#include "LevelManager.h"
 #include "Physics.h"
 #include "Player.h"
 #include "Tile.h"
@@ -16,6 +17,7 @@ class Game {
   Level        level;
   InputManager input;
   Physics      physics;
+  LevelManager levelManager;
 
  public:
   Game();

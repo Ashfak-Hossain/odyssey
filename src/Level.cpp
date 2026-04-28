@@ -7,6 +7,8 @@
 #include <sstream>
 
 #include "Config.h"
+#include "PathUtils.h"
+#include "Platform.h"
 
 using namespace std;
 
@@ -19,8 +21,8 @@ Level::Level()
 }
 
 bool Level::load(const string& levelFilePath) {
-  ifstream file(levelFilePath);
-
+  string   fullPath = getAssetPath(levelFilePath);
+  ifstream file(fullPath);
   // if can't open file or read file, return false and print error message
   if (!file.is_open()) {
     cerr << "[Level] couldn't open : " << levelFilePath << "\n";
@@ -50,6 +52,7 @@ bool Level::load(const string& levelFilePath) {
       section = "tiles";
       continue;
     }
+
     if (token == "exit") {
       section = "exit";
       continue;
@@ -105,7 +108,28 @@ bool Level::load(const string& levelFilePath) {
 }
 
 void Level::buildBackground(const string& theme) {
-  bgLayers.clear();
+  // Color palettes per theme
+  struct Palette {
+    float skyTopR, skyTopG, skyTopB;
+    float skyBotR, skyBotG, skyBotB;
+    float midR, midG, midB;
+    float nearR, nearG, nearB;
+  };
+
+  Palette p;
+
+  if (theme == "desert") {
+    p = {0.85f, 0.60f, 0.30f, 0.95f, 0.80f, 0.50f, 0.70f, 0.50f, 0.25f, 0.55f, 0.38f, 0.18f};
+  } else if (theme == "mountain") {
+    p = {0.55f, 0.65f, 0.80f, 0.75f, 0.82f, 0.90f, 0.50f, 0.50f, 0.55f, 0.35f, 0.38f, 0.40f};
+  }
+
+  {
+    ParallaxLayer sky(BACKGROUND_LAYER_1_SPEED);
+    sky.bands.push_back({350, (float)WINDOW_HEIGHT, p.skyTopR, p.skyTopG, p.skyTopB});
+    sky.bands.push_back({(float)GROUND_SURFACE_Y, 350, p.skyBotR, p.skyBotG, p.skyBotB});
+    bgLayers.push_back(sky);
+  }
 }
 
 /**
@@ -128,4 +152,26 @@ void Level::renderBackground(float cameraX) const {
   for (const auto& layer : bgLayers) {
     layer.render(cameraX);
   }
+}
+
+void Level::renderExit() const {
+  if (!hasExit)
+    return;
+
+  glColor3f(0.0f, 0.9f, 0.4f);
+  glBegin(GL_QUADS);
+  glVertex2f(exitDoor.x, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y + exitDoor.height);
+  glVertex2f(exitDoor.x, exitDoor.y + exitDoor.height);
+  glEnd();
+
+  glColor3f(0.0f, 0.5f, 0.2f);
+  glLineWidth(3.0f);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(exitDoor.x, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y + exitDoor.height);
+  glVertex2f(exitDoor.x, exitDoor.y + exitDoor.height);
+  glEnd();
 }

@@ -19,7 +19,7 @@ Camera::Camera() : x(0), y(0) {
  * @param playerX
  * @param playerY
  */
-void Camera::update(float playerX, float playerY) {
+void Camera::update(float playerX, float playerY, float worldWidth) {
   // the camera x is always keep the player at the camera offset
   x = playerX - CAMERA_PLAYER_OFFSET_X;
 
@@ -29,7 +29,12 @@ void Camera::update(float playerX, float playerY) {
   }
 
   // cant go beyond the world right edge
-  float maxX = WORLD_WIDTH - WINDOW_WIDTH;
+  float maxX = worldWidth - WINDOW_WIDTH;
+
+  if (maxX < 0) {
+    maxX = 0;
+  }
+
   if (x > maxX) {
     x = maxX;
   }

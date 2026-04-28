@@ -38,8 +38,7 @@ class Level {
    * @return `true` if loads level data successfully
    * @return `false` if faces any load level data error
    */
-  bool load(const std::string& levelFilePath) {
-  }
+  bool load(const std::string& levelFilePath);
 
   /**
    * @brief render solid objects.

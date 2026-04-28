@@ -3,7 +3,7 @@
 #include <cstdlib>
 
 #include "Config.h"
-#include "Level.h"
+#include "Game.h"
 #include "Platform.h"
 
 /**
@@ -32,8 +32,10 @@ void Game::init() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  // load level datas
-  level.loadTest();
+  // level manager loads level from assets/levels and position the player in the level
+  levelManager.init(player);
+
+  camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
 }
 
 /**
@@ -46,6 +48,10 @@ void Game::init() {
  * @param deltaTime Time elapsed since the last update(in seconds).
  */
 void Game::update(float deltaTime) {
+  if (levelManager.isComplete()) {
+    return;
+  }
+
   // key press handling checked in every upate for smooth movement
   if (input.isHeld('a') || input.isHeld('A')) {
     player.moveLeft();
@@ -55,11 +61,14 @@ void Game::update(float deltaTime) {
     player.stopMoving();
   }
 
-  // update physics of player and resolve collision with tiles
-  physics.update(player, level.tiles, deltaTime);
+  // Load level first then apply physics on this
+  Level& lvl = levelManager.currentLevel();
+  physics.update(player, lvl.tiles, deltaTime);
+
+  levelManager.update(player);
 
   // camera follows the player
-  camera.update(player.x, player.y);
+  camera.update(player.x, player.y, lvl.worldWidth);
 }
 
 /**
@@ -76,12 +85,15 @@ void Game::update(float deltaTime) {
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT);
 
-  level.renderBackground(camera.x);  // render bg
+  Level& lvl = levelManager.currentLevel();
+
+  lvl.renderBackground(camera.x);  // render bg
 
   glLoadIdentity();  // reset modelview matrix
   camera.applyTransform();
 
-  level.render();   // render tiles in world coordinate
+  lvl.renderForeground();  // render tiles in world coordinate
+  lvl.renderExit();
   player.render();  // render in world coordinate
 
   //! Future UI render will be implemented here

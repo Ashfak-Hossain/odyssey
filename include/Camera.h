@@ -11,7 +11,7 @@ class Camera {
   float x, y;
 
   Camera();
-  void update(float playerX, float playerY);
+  void update(float playerX, float playerY, float worldWidth);
 
   void applyTransform() const;
 
