@@ -9,6 +9,9 @@
 Game::Game() {
 }
 
+// ----------------------------------------------
+// ------------------- Init -------------------
+// ----------------------------------------------
 void Game::init() {
   glClearColor(0.4, 0.7, 1, 1);  // sky blue background
 
@@ -25,6 +28,9 @@ void Game::init() {
   camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
 }
 
+// ----------------------------------------------
+// ------------------- Update -------------------
+// ----------------------------------------------
 void Game::update(float deltaTime) {
   if (levelManager.isComplete()) {
     return;
@@ -50,6 +56,10 @@ void Game::update(float deltaTime) {
   camera.update(player.x, player.y, lvl.worldWidth);
 }
 
+// ----------------------------------------------
+// ------------------- Render -------------------
+// ----------------------------------------------
+
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT);
 
@@ -69,6 +79,9 @@ void Game::render() {
   glutSwapBuffers();
 }
 
+// ----------------------------------------------
+// ------------------- KeyDown -------------------
+// ----------------------------------------------
 void Game::handleKeyDown(unsigned char key, int x, int y) {
   inputManager.keyDown(key);
 
@@ -80,6 +93,9 @@ void Game::handleKeyDown(unsigned char key, int x, int y) {
   }
 }
 
+// ----------------------------------------------
+// ------------------- KeyUp -------------------
+// ----------------------------------------------
 void Game::handleKeyUp(unsigned char key, int x, int y) {
   inputManager.keyUp(key);
 }
