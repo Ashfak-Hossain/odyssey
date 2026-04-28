@@ -12,12 +12,12 @@
 #include "Tile.h"
 
 class Game {
+  Level        level;
   Player       player;
   Camera       camera;
-  Level        level;
-  InputManager input;
   Physics      physics;
   LevelManager levelManager;
+  InputManager inputManager;
 
  public:
   Game();

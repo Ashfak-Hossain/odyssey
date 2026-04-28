@@ -53,9 +53,9 @@ void Game::update(float deltaTime) {
   }
 
   // key press handling checked in every upate for smooth movement
-  if (input.isHeld('a') || input.isHeld('A')) {
+  if (inputManager.isHeld('a') || inputManager.isHeld('A')) {
     player.moveLeft();
-  } else if (input.isHeld('d') || input.isHeld('D')) {
+  } else if (inputManager.isHeld('d') || inputManager.isHeld('D')) {
     player.moveRight();
   } else {
     player.stopMoving();
@@ -108,7 +108,7 @@ void Game::render() {
  * @params x, y = mouse position.
  */
 void Game::handleKeyDown(unsigned char key, int x, int y) {
-  input.keyDown(key);
+  inputManager.keyDown(key);
 
   if (key == ' ') {
     player.jump();
@@ -125,5 +125,5 @@ void Game::handleKeyDown(unsigned char key, int x, int y) {
  * @params x, y = mouse position.
  */
 void Game::handleKeyUp(unsigned char key, int x, int y) {
-  input.keyUp(key);
+  inputManager.keyUp(key);
 }
