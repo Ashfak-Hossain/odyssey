@@ -6,47 +6,25 @@
 #include "Game.h"
 #include "Platform.h"
 
-/**
- * @brief Construct a new Game:: Game object
- */
 Game::Game() {
 }
 
-/**
- * @brief Initialize the game.
- * - this method will be called once at the start of the game.
- * - set the clear color for the background.
- * - set up the projection and modelview matrices.
- * - load the level data.
- */
 void Game::init() {
   glClearColor(0.4, 0.7, 1, 1);  // sky blue background
 
-  // projection matrix
-  glMatrixMode(GL_PROJECTION);
+  glMatrixMode(GL_PROJECTION);  // projection matrix
   glLoadIdentity();
-
   glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);  // left, right, bottom, top, near, far
-
-  // modelview matrix
-  glMatrixMode(GL_MODELVIEW);
+  glMatrixMode(GL_MODELVIEW);                         // modelview matrix
   glLoadIdentity();
 
-  // level manager loads level from assets/levels and position the player in the level
+  // loads the level and spawn the player
   levelManager.init(player);
 
+  // update the camera for player
   camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
 }
 
-/**
- * @brief Update the game state every frame.
- * - This methid will be called in every frame.
- * - handles keyboard inputs.
- * - updates physics of the player.
- * - updates the camera position to follow the player.
- *
- * @param deltaTime Time elapsed since the last update(in seconds).
- */
 void Game::update(float deltaTime) {
   if (levelManager.isComplete()) {
     return;
@@ -61,27 +39,17 @@ void Game::update(float deltaTime) {
     player.stopMoving();
   }
 
-  // Load level first then apply physics on this
+  // apply physics in the current level
   Level& lvl = levelManager.currentLevel();
   physics.update(player, lvl.tiles, deltaTime);
 
+  // check level progeression
   levelManager.update(player);
 
-  // camera follows the player
+  // update the camera for player
   camera.update(player.x, player.y, lvl.worldWidth);
 }
 
-/**
- * @brief Renders the complete game scene each frame.
- * - This method will be called in every frame.
- * - Clear thr screen.
- * - Render background.
- * - Apply camera transform to the scene.
- *    - This will move the world in the opposite direction of the camera.
- * - Render the level in world coordinate.
- * - Render the player in world coordinate.
- * - Swap the buffers to display the rendered scene.
- */
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT);
 
@@ -101,12 +69,6 @@ void Game::render() {
   glutSwapBuffers();
 }
 
-/**
- * @brief Handle key down events. Space for jump, Esc for exit.
- *
- * @param key ascii code of key
- * @params x, y = mouse position.
- */
 void Game::handleKeyDown(unsigned char key, int x, int y) {
   inputManager.keyDown(key);
 
@@ -118,12 +80,6 @@ void Game::handleKeyDown(unsigned char key, int x, int y) {
   }
 }
 
-/**
- * @brief Handle key up events.
- *
- * @param key ascii code of key
- * @params x, y = mouse position.
- */
 void Game::handleKeyUp(unsigned char key, int x, int y) {
   inputManager.keyUp(key);
 }
