@@ -13,26 +13,39 @@
  */
 class Level {
  public:
-  float                      worldWidth;
-  std::string                name;
-  std::vector<Tile>          tiles;
-  std::vector<ParallaxLayer> bgLayers;
+  std::vector<Tile>          tiles;     // array of Tile in the level
+  std::vector<ParallaxLayer> bgLayers;  // bg layers of this level
 
+  std::string name;        // name of this level
+  float       worldWidth;  // total world width of the level
+
+  // ---- Player initial/spawn position in the level;
+  float playerStartX;
+  float playerStartY;
+
+  Rect exitDoor;  // overlap with exitDoor will advance to the next level
+  bool hasExit;
+
+  /**
+   * @brief Construct a new Level object
+   */
   Level();
 
-  void loadTest();
+  /**
+   * @brief load level data from txt file
+   *
+   * @param levelFilePath dir path of the level data file
+   * @return `true` if loads level data successfully
+   * @return `false` if faces any load level data error
+   */
+  bool load(const std::string& levelFilePath);
 
   /**
    * @brief render solid objects.
    *
    * @note This should be called after camera transform
    */
-  void render() const;
-
-  /**
-   * @brief build the background of the level.
-   */
-  void buildBackground();
+  void renderForeground() const;
 
   /**
    * @brief render the background layer of the level.
@@ -41,6 +54,20 @@ class Level {
    * @note This should be called before camera transform.
    */
   void renderBackground(float cameraX) const;
+
+  /**
+   * @brief render the exit zone
+   *
+   */
+  void renderExit() const;
+
+ private:
+  /**
+   * @brief build parallax background layers based on the theme.
+   *
+   * @param theme ocean | desert | mountain | jungle
+   */
+  void buildBackground(const std::string& theme);
 };
 
 #endif  // LEVEL_H

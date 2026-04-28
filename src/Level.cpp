@@ -1,101 +1,141 @@
 #include "Level.h"
 
+#include <string.h>
+
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 #include "Config.h"
+#include "PathUtils.h"
+#include "Platform.h"
 
-Level::Level() : worldWidth(WORLD_WIDTH), name("test") {
+using namespace std;
+
+Level::Level()
+    : worldWidth(WORLD_WIDTH),
+      playerStartX(100),
+      playerStartY(GROUND_SURFACE_Y),
+      exitDoor{0, 0, 0, 0},
+      hasExit(false) {
 }
 
-void Level::loadTest() {
-  buildBackground();
+bool Level::load(const string& levelFilePath) {
+  string   fullPath = getAssetPath(levelFilePath);
+  ifstream file(fullPath);
+  // if can't open file or read file, return false and print error message
+  if (!file.is_open()) {
+    cerr << "[Level] couldn't open : " << levelFilePath << "\n";
+    return false;
+  }
 
-  tiles = {
-      {0, GROUND_Y, 900, GROUND_TILE_HEIGHT, 0.35f, 0.65f, 0.25f},
-      {1000, GROUND_Y, 900, GROUND_TILE_HEIGHT, 0.35f, 0.65f, 0.25f},
-      {250, 120, 180, 20, 0.55f, 0.40f, 0.25f},
-      {420, 80, 180, 20, 0.55f, 0.40f, 0.25f},
-      {550, 220, 180, 20, 0.55f, 0.40f, 0.25f},
-      {820, 320, 180, 20, 0.55f, 0.40f, 0.25f},
-      {1100, 180, 180, 20, 0.55f, 0.40f, 0.25f},
-      {400, 340, 120, 20, 0.70f, 0.30f, 0.30f},
-      {720, 20, 20, 100, 0.30f, 0.30f, 0.70f},
-  };
-}
-
-void Level::buildBackground() {
+  tiles.clear();
   bgLayers.clear();
+  hasExit = false;
 
-  //! ============== Demo BG ==============
+  string section = "none";
+  string theme   = "ocean";
+
+  string line;
+
+  while (getline(file, line)) {
+    if (line.empty() || line[0] == '#') {
+      continue;
+    }
+
+    istringstream ss(line);
+    string        token;
+    ss >> token;
+
+    // Extracts section from token
+    if (token == "tiles") {
+      section = "tiles";
+      continue;
+    }
+
+    if (token == "exit") {
+      section = "exit";
+      continue;
+    }
+
+    if (token == "name") {
+      getline(ss, name);
+      if (!name.empty() && name[0] == ' ') {
+        name = name.substr(1);
+      }
+      continue;
+    }
+
+    if (token == "width") {
+      ss >> worldWidth;
+      continue;
+    }
+
+    if (token == "theme") {
+      ss >> theme;
+      continue;
+    }
+
+    if (token == "start") {
+      ss >> playerStartX >> playerStartY;
+      continue;
+    }
+
+    if (section == "tiles") {
+      Tile t;
+      t.x = stof(token);  // already read first token as value of x
+      ss >> t.y >> t.width >> t.height >> t.r >> t.g >> t.b;
+      tiles.push_back(t);
+      continue;
+    }
+
+    if (section == "exit") {
+      exitDoor.x = stof(token);
+      ss >> exitDoor.y >> exitDoor.width >> exitDoor.height;
+      hasExit = true;
+      section = "none";
+      continue;
+    }
+  }
+
+  // build the background based on the theme
+  buildBackground(theme);
+
+  // Log the Level load result
+  cout << "[Level] Loaded: " << name << " (" << tiles.size() << " tiles)\n";
+
+  return true;
+}
+
+void Level::buildBackground(const string& theme) {
+  // Color palettes per theme
+  struct Palette {
+    float skyTopR, skyTopG, skyTopB;
+    float skyBotR, skyBotG, skyBotB;
+    float midR, midG, midB;
+    float nearR, nearG, nearB;
+  };
+
+  Palette p;
+
+  if (theme == "desert") {
+    p = {0.85f, 0.60f, 0.30f, 0.95f, 0.80f, 0.50f, 0.70f, 0.50f, 0.25f, 0.55f, 0.38f, 0.18f};
+  } else if (theme == "mountain") {
+    p = {0.55f, 0.65f, 0.80f, 0.75f, 0.82f, 0.90f, 0.50f, 0.50f, 0.55f, 0.35f, 0.38f, 0.40f};
+  }
+
   {
     ParallaxLayer sky(BACKGROUND_LAYER_1_SPEED);
-    sky.bands.push_back({350, (float)WINDOW_HEIGHT, 0.2, 0.45, 0.80});
-    sky.bands.push_back({(float)GROUND_SURFACE_Y, 350, 0.50f, 0.72f, 0.95f});
+    sky.bands.push_back({350, (float)WINDOW_HEIGHT, p.skyTopR, p.skyTopG, p.skyTopB});
+    sky.bands.push_back({(float)GROUND_SURFACE_Y, 350, p.skyBotR, p.skyBotG, p.skyBotB});
     bgLayers.push_back(sky);
   }
-
-  {
-    ParallaxLayer mountains(BACKGROUND_LAYER_2_SPEED);
-
-    // Dark purple-grey mountain color — desaturated for distance
-    float mr = 0.40f, mg = 0.35f, mb = 0.50f;
-
-    // Spread mountains across the full world width.
-    // Each mountain: base at ground surface, peak varies for natural look.
-    float peaks[] = {320, 260, 380, 300, 340, 270, 360, 290, 320, 350};
-    float spacing = WORLD_WIDTH / 10.0f;  // 10 mountains across the world
-
-    for (int i = 0; i < 10; i++) {
-      float baseX = i * spacing;
-      float halfW = spacing * 0.7f;  // mountains slightly overlap
-      float peakY = GROUND_SURFACE_Y + peaks[i % 10];
-
-      mountains.shapes.push_back({baseX - halfW,
-                                  GROUND_SURFACE_Y,  // bottom left
-                                  baseX + halfW,
-                                  GROUND_SURFACE_Y,  // bottom right
-                                  baseX,
-                                  peakY,  // peak
-                                  mr,
-                                  mg,
-                                  mb});
-    }
-
-    bgLayers.push_back(mountains);
-  }
-
-  {
-    ParallaxLayer hills(BACKGROUND_LAYER_3_SPEED);
-
-    // Muted dark green — in shadow compared to the lit ground
-    float hr = 0.20f, hg = 0.50f, hb = 0.20f;
-
-    float spacing   = WORLD_WIDTH / 14.0f;  // more hills, smaller
-    float heights[] = {100, 80, 120, 90, 110, 85, 105, 95, 115, 75, 130, 88, 98, 108};
-
-    for (int i = 0; i < 14; i++) {
-      float baseX = i * spacing;
-      float halfW = spacing * 0.65f;
-      float peakY = GROUND_SURFACE_Y + heights[i % 14];
-
-      hills.shapes.push_back({baseX - halfW,
-                              GROUND_SURFACE_Y,
-                              baseX + halfW,
-                              GROUND_SURFACE_Y,
-                              baseX,
-                              peakY,
-                              hr,
-                              hg,
-                              hb});
-    }
-
-    bgLayers.push_back(hills);
-  }
-  //! ============== Demo BG ==============
 }
 
 /**
  * @brief render the tiles and objects in world space.
  */
-void Level::render() const {
+void Level::renderForeground() const {
   for (const auto& tile : tiles) {
     tile.render();
   }
@@ -112,4 +152,26 @@ void Level::renderBackground(float cameraX) const {
   for (const auto& layer : bgLayers) {
     layer.render(cameraX);
   }
+}
+
+void Level::renderExit() const {
+  if (!hasExit)
+    return;
+
+  glColor3f(0.0f, 0.9f, 0.4f);
+  glBegin(GL_QUADS);
+  glVertex2f(exitDoor.x, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y + exitDoor.height);
+  glVertex2f(exitDoor.x, exitDoor.y + exitDoor.height);
+  glEnd();
+
+  glColor3f(0.0f, 0.5f, 0.2f);
+  glLineWidth(3.0f);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(exitDoor.x, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);
+  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y + exitDoor.height);
+  glVertex2f(exitDoor.x, exitDoor.y + exitDoor.height);
+  glEnd();
 }
