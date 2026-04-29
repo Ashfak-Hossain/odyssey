@@ -9,7 +9,9 @@ Player::Player()
       vy(0),
       width(PLAYER_WIDTH),
       height(PLAYER_HEIGHT),
-      onGround(true) {
+      onGround(true),
+      startX(100),
+      startY(GROUND_SURFACE_Y) {
 }
 
 void Player::applyGravity(float deltaTime) {
@@ -48,4 +50,18 @@ void Player::moveRight() {
 
 void Player::stopMoving() {
   vx = 0;
+}
+
+void Player::respawn() {
+  x        = startX;
+  y        = startY;
+  vx       = 0;
+  vy       = 0;
+  onGround = false;
+}
+
+void Player::takeDamage() {
+  health--;
+  hasKey = false;
+  respawn();
 }
