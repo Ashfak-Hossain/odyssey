@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "Config.h"
+#include "Key.h"
 #include "PathUtils.h"
 #include "Platform.h"
 
@@ -30,6 +31,7 @@ bool Level::load(const string& levelFilePath) {
   }
 
   tiles.clear();
+  keys.clear();
   bgLayers.clear();
   hasExit = false;
 
@@ -55,6 +57,11 @@ bool Level::load(const string& levelFilePath) {
 
     if (token == "exit") {
       section = "exit";
+      continue;
+    }
+
+    if (token == "keys") {
+      section = "keys";
       continue;
     }
 
@@ -94,6 +101,15 @@ bool Level::load(const string& levelFilePath) {
       ss >> exitDoor.y >> exitDoor.width >> exitDoor.height;
       hasExit = true;
       section = "none";
+      continue;
+    }
+
+    if (section == "keys") {
+      Key k;
+      k.x = stof(token);
+      ss >> k.y >> k.width >> k.height;
+      k.collected = false;
+      keys.push_back(k);
       continue;
     }
   }
@@ -154,11 +170,21 @@ void Level::renderBackground(float cameraX) const {
   }
 }
 
-void Level::renderExit() const {
+void Level::renderKeys() const {
+  for (const auto& key : keys) {
+    key.render();
+  }
+}
+
+void Level::renderExit(bool locked) const {
   if (!hasExit)
     return;
 
-  glColor3f(0.0f, 0.9f, 0.4f);
+  if (locked) {
+    glColor3f(0.8f, 0.1f, 0.1f);
+  } else {
+    glColor3f(0.1f, 0.8f, 0.1f);
+  }
   glBegin(GL_QUADS);
   glVertex2f(exitDoor.x, exitDoor.y);
   glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);
@@ -166,7 +192,11 @@ void Level::renderExit() const {
   glVertex2f(exitDoor.x, exitDoor.y + exitDoor.height);
   glEnd();
 
-  glColor3f(0.0f, 0.5f, 0.2f);
+  if (locked) {
+    glColor3f(0.5f, 0.05f, 0.05f);
+  } else {
+    glColor3f(0.05f, 0.5f, 0.05f);
+  }
   glLineWidth(3.0f);
   glBegin(GL_LINE_LOOP);
   glVertex2f(exitDoor.x, exitDoor.y);

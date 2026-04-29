@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "Key.h"
 #include "ParallaxLayer.h"
 #include "Tile.h"
 
@@ -14,6 +15,7 @@
 class Level {
  public:
   std::vector<Tile>          tiles;     // array of Tile in the level
+  std::vector<Key>           keys;      // collectible keys in the level
   std::vector<ParallaxLayer> bgLayers;  // bg layers of this level
 
   std::string name;        // name of this level
@@ -56,10 +58,15 @@ class Level {
   void renderBackground(float cameraX) const;
 
   /**
-   * @brief render the exit zone
-   *
+   * @brief render uncollected keys in world space
    */
-  void renderExit() const;
+  void renderKeys() const;
+
+  /**
+   * @brief render the exit zone
+   * @param locked true needs key, false = open
+   */
+  void renderExit(bool locked) const;
 
  private:
   /**
