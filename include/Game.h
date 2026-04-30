@@ -76,7 +76,7 @@ class Game {
   void handleKeyUp(unsigned char key, int x, int y);
 
   /**
-   * @brief Handle key up events.
+   * @brief Handle key down events.
    *
    * @param key ascii code of key
    * @params x, y = mouse position.
