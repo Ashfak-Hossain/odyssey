@@ -1,7 +1,7 @@
-#include "Camera.h"
+#include "systems/Camera.h"
 
 #include "Config.h"
-#include "Platform.h"
+#include "utils/Platform.h"
 
 /**
  * @brief Construct a new Camera:: Camera object

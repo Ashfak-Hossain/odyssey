@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 
-#include "Key.h"
-#include "ParallaxLayer.h"
-#include "Tile.h"
+#include "entities/Key.h"
+#include "entities/Tile.h"
+#include "world/ParallaxLayer.h"
 
 /**
  * @brief This class will hold all static data in a level.

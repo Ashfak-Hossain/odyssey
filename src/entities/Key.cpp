@@ -1,6 +1,6 @@
-#include "Key.h"
+#include "entities/Key.h"
 
-#include "Platform.h"
+#include "utils/Platform.h"
 
 Rect Key::getRect() const {
   return {x, y, width, height};

@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "Player.h"
-#include "Tile.h"
+#include "entities/Player.h"
+#include "entities/Tile.h"
 
 /**
  * @brief

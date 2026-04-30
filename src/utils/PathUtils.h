@@ -20,7 +20,7 @@ namespace fs = std::filesystem;
  * @return string fullPath of the level file
  */
 inline string getAssetPath(const string& relative) {
-  fs::path projectRoot = fs::path(__FILE__).parent_path().parent_path();
+  fs::path projectRoot = fs::path(__FILE__).parent_path().parent_path().parent_path();
   string   fullPath    = (projectRoot / "assets" / relative).string();
   return fullPath;
 }

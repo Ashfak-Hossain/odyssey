@@ -1,6 +1,6 @@
-#include "Tile.h"
+#include "entities/Tile.h"
 
-#include "Platform.h"
+#include "utils/Platform.h"
 
 Rect Tile::getRect() const {
   return {x, y, width, height};

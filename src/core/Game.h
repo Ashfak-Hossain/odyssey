@@ -3,16 +3,15 @@
 
 #include <vector>
 
-#include "Camera.h"
-#include "HUD.h"
-#include "InputManager.h"
-#include "Level.h"
-#include "LevelManager.h"
-#include "Physics.h"
-#include "Player.h"
-#include "Tile.h"
-
-enum class GameState { PLAYING, FADING_OUT, FADING_IN };
+#include "core/GameState.h"
+#include "core/HUD.h"
+#include "entities/Player.h"
+#include "entities/Tile.h"
+#include "systems/Camera.h"
+#include "systems/InputManager.h"
+#include "systems/Physics.h"
+#include "world/Level.h"
+#include "world/LevelManager.h"
 
 class Game {
   Player       player;

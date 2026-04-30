@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Rect.h"
+#include "entities/Rect.h"
 
 class Player {
  public:

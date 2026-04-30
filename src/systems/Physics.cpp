@@ -1,7 +1,7 @@
-#include "Physics.h"
+#include "systems/Physics.h"
 
 #include "Config.h"
-#include "Rect.h"
+#include "entities/Rect.h"
 
 void Physics::update(Player& player, const std::vector<Tile>& tiles, float deltaTime) {
   // applied gravity to player.

@@ -20,7 +20,7 @@ find_package(GLUT REQUIRED)
 
 # genearate config file in build dir
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/Config.h.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/config/Config.h.in"
   "${CMAKE_CURRENT_BINARY_DIR}/Config.h"
 )
 
@@ -29,13 +29,13 @@ include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # all source files
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(odyssey ${SOURCES})
 
 # private include path for the game itself
 target_include_directories(odyssey PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"   
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"   
     "${CMAKE_CURRENT_BINARY_DIR}"           
 )
 

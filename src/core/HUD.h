@@ -1,8 +1,8 @@
 #ifndef HUD_H
 #define HUD_H
 
-#include "LevelManager.h"
-#include "Player.h"
+#include "world/LevelManager.h"
+#include "entities/Player.h"
 
 /**
  * @brief Renders the in-game HUD in screen space (health, key indicator, level name).

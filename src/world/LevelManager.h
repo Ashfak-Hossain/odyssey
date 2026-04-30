@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "Level.h"
-#include "Player.h"
+#include "entities/Player.h"
+#include "world/Level.h"
 
 /**
  * @brief Owns the ordered sequence of levels and manage changing between them.

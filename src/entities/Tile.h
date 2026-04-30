@@ -1,7 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include "Rect.h"
+#include "entities/Rect.h"
 
 /**
  * @brief this is the static object in the game.It just has position and size. A building block.

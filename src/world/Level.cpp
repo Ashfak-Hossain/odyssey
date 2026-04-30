@@ -7,9 +7,10 @@
 #include <sstream>
 
 #include "Config.h"
-#include "Key.h"
-#include "PathUtils.h"
-#include "Platform.h"
+#include "entities/Key.h"
+#include "utils/PathUtils.h"
+#include "utils/Platform.h"
+#include "world/Level.h"
 
 using namespace std;
 

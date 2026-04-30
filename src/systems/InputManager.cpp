@@ -1,4 +1,4 @@
-#include "InputManager.h"
+#include "systems/InputManager.h"
 
 // Constructor initializes all keys to false(not pressed)
 InputManager::InputManager() {

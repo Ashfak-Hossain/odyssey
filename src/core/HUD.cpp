@@ -1,6 +1,6 @@
-#include "HUD.h"
+#include "core/HUD.h"
 
-#include "Platform.h"
+#include "utils/Platform.h"
 
 HUD::HUD(const Player& player, const LevelManager& levelManager)
     : player(player), levelManager(levelManager) {

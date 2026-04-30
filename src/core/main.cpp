@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Game.h"
-#include "Platform.h"
+#include "core/Game.h"
+#include "utils/Platform.h"
 
 Game game;
 

@@ -1,7 +1,7 @@
-#include "ParallaxLayer.h"
+#include "world/ParallaxLayer.h"
 
 #include "Config.h"
-#include "Platform.h"
+#include "utils/Platform.h"
 
 ParallaxLayer::ParallaxLayer(float factor) : scrollFactor(factor) {
 }

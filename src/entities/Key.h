@@ -1,7 +1,7 @@
 #ifndef KEY_H
 #define KEY_H
 
-#include "Rect.h"
+#include "entities/Rect.h"
 
 /**
  * @struct Key

@@ -1,6 +1,6 @@
-#include "Player.h"
+#include "entities/Player.h"
 
-#include "Platform.h"
+#include "utils/Platform.h"
 
 Player::Player()
     : x(100),

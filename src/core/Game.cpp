@@ -1,9 +1,9 @@
-#include "Game.h"
+#include "core/Game.h"
 
 #include <cstdlib>
 
 #include "Config.h"
-#include "Platform.h"
+#include "utils/Platform.h"
 
 Game::Game() : hud(player, levelManager) {
 }
