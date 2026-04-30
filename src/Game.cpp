@@ -3,28 +3,24 @@
 #include <cstdlib>
 
 #include "Config.h"
-#include "Game.h"
 #include "Platform.h"
 
-Game::Game() {
+Game::Game() : hud(player, levelManager) {
 }
 
 // ----------------------------------------------
-// ------------------- Init -------------------
+// ------------------- Init ---------------------
 // ----------------------------------------------
 void Game::init() {
   glClearColor(0.4, 0.7, 1, 1);  // sky blue background
 
-  glMatrixMode(GL_PROJECTION);  // projection matrix
+  glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);  // left, right, bottom, top, near, far
-  glMatrixMode(GL_MODELVIEW);                         // modelview matrix
+  glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
+  glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  // loads the level and spawn the player
   levelManager.init(player);
-
-  // update the camera for player
   camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
 }
 
@@ -36,7 +32,40 @@ void Game::update(float deltaTime) {
     return;
   }
 
-  // key press handling checked in every upate for smooth movement
+  // Handle transition animation — block gameplay input during fades
+  if (state != GameState::PLAYING) {
+    transitionTimer += deltaTime;
+
+    if (state == GameState::FADING_OUT) {
+      transitionAlpha = transitionTimer / FADE_DURATION;
+      if (transitionAlpha > 1.0f) {
+        transitionAlpha = 1.0f;
+      }
+
+      if (transitionTimer >= FADE_DURATION) {
+        levelManager.advance(player);
+        state           = GameState::FADING_IN;
+        transitionTimer = 0.0f;
+      }
+
+    } else if (state == GameState::FADING_IN) {
+      transitionAlpha = 1.0f - transitionTimer / FADE_DURATION;
+      if (transitionAlpha < 0.0f) {
+        transitionAlpha = 0.0f;
+      }
+
+      if (transitionTimer >= FADE_DURATION) {
+        transitionAlpha = 0.0f;
+        state           = GameState::PLAYING;
+      }
+    }
+
+    camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
+    return;
+  }
+
+  // --- Normal gameplay ---
+
   if (inputManager.isHeld('a') || inputManager.isHeld('A')) {
     player.moveLeft();
   } else if (inputManager.isHeld('d') || inputManager.isHeld('D')) {
@@ -45,47 +74,82 @@ void Game::update(float deltaTime) {
     player.stopMoving();
   }
 
-  // apply physics in the current level
   Level& lvl = levelManager.currentLevel();
   physics.update(player, lvl.tiles, deltaTime);
 
-  // check level progeression
-  levelManager.update(player);
+  // Key pickup
+  Rect playerRect = player.getRect();
+  for (auto& key : lvl.keys) {
+    if (!key.collected && playerRect.overlaps(key.getRect())) {
+      key.collected = true;
+      player.hasKey = true;
+    }
+  }
 
-  // update the camera for player
+  // Fall-off damage
+  if (player.y < -100.0f) {
+    player.takeDamage();
+    if (player.health <= 0) {
+      player.health = Player::MAX_HEALTH;
+      levelManager.resetToFirst(player);
+    }
+  }
+
+  // Level change, use fade animation instead of instant change
+  if (levelManager.shouldAdvance(player)) {
+    state           = GameState::FADING_OUT;
+    transitionTimer = 0.0f;
+  }
+
   camera.update(player.x, player.y, lvl.worldWidth);
 }
 
 // ----------------------------------------------
 // ------------------- Render -------------------
 // ----------------------------------------------
-
 void Game::render() {
   glClear(GL_COLOR_BUFFER_BIT);
 
   Level& lvl = levelManager.currentLevel();
 
-  lvl.renderBackground(camera.x);  // render bg
+  lvl.renderBackground(camera.x);
 
-  glLoadIdentity();  // reset modelview matrix
+  glLoadIdentity();
   camera.applyTransform();
 
-  lvl.renderForeground();  // render tiles in world coordinate
-  lvl.renderExit();
-  player.render();  // render in world coordinate
+  lvl.renderForeground();
+  lvl.renderKeys();
+  lvl.renderExit(!player.hasKey);
+  player.render();
 
-  //! Future UI render will be implemented here
+  // HUD in screen space
+  hud.render(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+  // Fade overlay (black quad over full screen)
+  glPushMatrix();
+  glLoadIdentity();
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glColor4f(0.0f, 0.0f, 0.0f, transitionAlpha);
+  glBegin(GL_QUADS);
+  glVertex2f(0.0f, 0.0f);
+  glVertex2f((float)WINDOW_WIDTH, 0.0f);
+  glVertex2f((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+  glVertex2f(0.0f, (float)WINDOW_HEIGHT);
+  glEnd();
+  glDisable(GL_BLEND);
+  glPopMatrix();
 
   glutSwapBuffers();
 }
 
 // ----------------------------------------------
-// ------------------- KeyDown -------------------
+// ------------------- KeyDown ------------------
 // ----------------------------------------------
 void Game::handleKeyDown(unsigned char key, int x, int y) {
   inputManager.keyDown(key);
 
-  if (key == ' ') {
+  if (key == ' ' && state == GameState::PLAYING) {
     player.jump();
   }
   if (key == 27) {
@@ -94,7 +158,7 @@ void Game::handleKeyDown(unsigned char key, int x, int y) {
 }
 
 // ----------------------------------------------
-// ------------------- KeyUp -------------------
+// ------------------- KeyUp --------------------
 // ----------------------------------------------
 void Game::handleKeyUp(unsigned char key, int x, int y) {
   inputManager.keyUp(key);
