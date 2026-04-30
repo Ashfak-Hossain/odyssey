@@ -4,9 +4,14 @@
 #include <vector>
 
 #include "core/GameState.h"
-#include "core/HUD.h"
 #include "entities/Player.h"
 #include "entities/Tile.h"
+#include "render/BackgroundRenderer.h"
+#include "render/HudRenderer.h"
+#include "render/PlayerRenderer.h"
+#include "render/Renderer.h"
+#include "render/TransitionRenderer.h"
+#include "render/WorldRenderer.h"
 #include "systems/Camera.h"
 #include "systems/InputManager.h"
 #include "systems/Physics.h"
@@ -19,7 +24,14 @@ class Game {
   Camera       camera;
   Physics      physics;
   InputManager inputManager;
-  HUD          hud;
+
+  // renderers
+  Renderer           renderer;
+  PlayerRenderer     playerRenderer;
+  WorldRenderer      worldRenderer;
+  BackgroundRenderer backgroundRenderer;
+  HudRenderer        hudRenderer;
+  TransitionRenderer transitionRenderer;
 
   GameState state           = GameState::PLAYING;
   float     transitionAlpha = 0.0f;

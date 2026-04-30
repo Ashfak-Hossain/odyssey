@@ -9,7 +9,6 @@
 #include "Config.h"
 #include "entities/Key.h"
 #include "utils/PathUtils.h"
-#include "utils/Platform.h"
 #include "world/Level.h"
 
 using namespace std;
@@ -147,62 +146,4 @@ void Level::buildBackground(const string& theme) {
     sky.bands.push_back({(float)GROUND_SURFACE_Y, HORIZON_Y, p.skyBotR, p.skyBotG, p.skyBotB});
     bgLayers.push_back(sky);
   }
-}
-
-/**
- * @brief render the tiles and objects in world space.
- */
-void Level::renderForeground() const {
-  for (const auto& tile : tiles) {
-    tile.render();
-  }
-}
-
-/**
- * @brief Each layer render with its own glLoadIdentity, glTranslatef separately.
- *
- * @param cameraX The horizontal position of the camera.
- *
- * @note Must be called before full camera transform
- */
-void Level::renderBackground(float cameraX) const {
-  for (const auto& layer : bgLayers) {
-    layer.render(cameraX);
-  }
-}
-
-void Level::renderKeys() const {
-  for (const auto& key : keys) {
-    key.render();
-  }
-}
-
-void Level::renderExit(bool locked) const {
-  if (!hasExit)
-    return;
-
-  if (locked) {
-    glColor3f(EXIT_LOCKED_FILL_R, EXIT_LOCKED_FILL_G, EXIT_LOCKED_FILL_B);
-  } else {
-    glColor3f(EXIT_UNLOCKED_FILL_R, EXIT_UNLOCKED_FILL_G, EXIT_UNLOCKED_FILL_B);
-  }
-  glBegin(GL_QUADS);
-  glVertex2f(exitDoor.x, exitDoor.y);
-  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);
-  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y + exitDoor.height);
-  glVertex2f(exitDoor.x, exitDoor.y + exitDoor.height);
-  glEnd();
-
-  if (locked) {
-    glColor3f(EXIT_LOCKED_BORDER_R, EXIT_LOCKED_BORDER_G, EXIT_LOCKED_BORDER_B);
-  } else {
-    glColor3f(EXIT_UNLOCKED_BORDER_R, EXIT_UNLOCKED_BORDER_G, EXIT_UNLOCKED_BORDER_B);
-  }
-  glLineWidth(EXIT_BORDER_LINE_WIDTH);
-  glBegin(GL_LINE_LOOP);
-  glVertex2f(exitDoor.x, exitDoor.y);
-  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);
-  glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y + exitDoor.height);
-  glVertex2f(exitDoor.x, exitDoor.y + exitDoor.height);
-  glEnd();
 }

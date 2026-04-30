@@ -42,32 +42,6 @@ class Level {
    */
   bool load(const std::string& levelFilePath);
 
-  /**
-   * @brief render solid objects.
-   *
-   * @note This should be called after camera transform
-   */
-  void renderForeground() const;
-
-  /**
-   * @brief render the background layer of the level.
-   * @param cameraX The horizontal position of the camera.
-   *
-   * @note This should be called before camera transform.
-   */
-  void renderBackground(float cameraX) const;
-
-  /**
-   * @brief render uncollected keys in world space
-   */
-  void renderKeys() const;
-
-  /**
-   * @brief render the exit zone
-   * @param locked true needs key, false = open
-   */
-  void renderExit(bool locked) const;
-
  private:
   /**
    * @brief build parallax background layers based on the theme.

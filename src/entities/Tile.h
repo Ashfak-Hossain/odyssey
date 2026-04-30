@@ -14,9 +14,6 @@ struct Tile {
 
   // returns the bounding box of this tile
   Rect getRect() const;
-
-  // render this tile on the screen
-  void render() const;
 };
 
 #endif  // TILE_H

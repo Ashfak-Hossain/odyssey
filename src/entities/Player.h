@@ -27,7 +27,6 @@ class Player {
    * @param deltaTime time elapsed since last frame(in seconds)
    */
   void applyGravity(float deltaTime);
-  void render();
   void jump();
   void moveLeft();
   void moveRight();

@@ -22,12 +22,6 @@ class ParallaxLayer {
   std::vector<Triangle>  shapes;  // decorative geometry
 
   ParallaxLayer(float factor);
-
-  /**
-   * @brief Renders the parallax layer based on the camera's horizontal position.
-   * @param cameraX The horizontal position of the camera.
-   */
-  void render(float cameraX) const;
 };
 
 #endif  // PARALLAXLAYER_H

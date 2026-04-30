@@ -5,7 +5,7 @@
 #include "Config.h"
 #include "utils/Platform.h"
 
-Game::Game() : hud(player, levelManager) {
+Game::Game() {
 }
 
 // ----------------------------------------------
@@ -108,39 +108,33 @@ void Game::update(float deltaTime) {
 // ------------------- Render -------------------
 // ----------------------------------------------
 void Game::render() {
-  glClear(GL_COLOR_BUFFER_BIT);
+  renderer.clearScreen();
 
   Level& lvl = levelManager.currentLevel();
 
-  lvl.renderBackground(camera.x);
+  // Background — before camera transform
+  backgroundRenderer.draw(lvl.bgLayers, camera.x, renderer);
 
-  glLoadIdentity();
+  // Apply camera for world-space objects
+  renderer.loadIdentity();
   camera.applyTransform();
 
-  lvl.renderForeground();
-  lvl.renderKeys();
-  lvl.renderExit(!player.hasKey);
-  player.render();
+  worldRenderer.drawTiles(lvl.tiles, renderer);
+  worldRenderer.drawKeys(lvl.keys, renderer);
 
-  // HUD in screen space
-  hud.render(WINDOW_WIDTH, WINDOW_HEIGHT);
+  if (lvl.hasExit) {
+    worldRenderer.drawExit(lvl.exitDoor, !player.hasKey, renderer);
+  }
 
-  // Fade overlay (black quad over full screen)
-  glPushMatrix();
-  glLoadIdentity();
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glColor4f(0.0f, 0.0f, 0.0f, transitionAlpha);
-  glBegin(GL_QUADS);
-  glVertex2f(0.0f, 0.0f);
-  glVertex2f((float)WINDOW_WIDTH, 0.0f);
-  glVertex2f((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
-  glVertex2f(0.0f, (float)WINDOW_HEIGHT);
-  glEnd();
-  glDisable(GL_BLEND);
-  glPopMatrix();
+  playerRenderer.draw(player, renderer);
 
-  glutSwapBuffers();
+  // HUD — screen space
+  hudRenderer.draw(player, levelManager, WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
+
+  // Fade overlay — always last
+  transitionRenderer.draw(transitionAlpha, WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
+
+  renderer.swapBuffers();
 }
 
 // ----------------------------------------------

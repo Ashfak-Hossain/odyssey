@@ -12,7 +12,6 @@ struct Key {
   bool  collected = false;
 
   Rect getRect() const;
-  void render() const;
 };
 
 #endif  // KEY_H
