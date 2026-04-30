@@ -21,10 +21,9 @@ class Game {
   InputManager inputManager;
   HUD          hud;
 
-  GameState              state           = GameState::PLAYING;
-  float                  transitionAlpha = 0.0f;
-  float                  transitionTimer = 0.0f;
-  static constexpr float FADE_DURATION   = 0.5f;
+  GameState state           = GameState::PLAYING;
+  float     transitionAlpha = 0.0f;
+  float     transitionTimer = 0.0f;
 
  public:
   Game();

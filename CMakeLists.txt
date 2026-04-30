@@ -24,6 +24,10 @@ configure_file(
   "${CMAKE_CURRENT_BINARY_DIR}/Config.h"
 )
 
+# Copy config headers into build dir so Config.h can #include them
+file(GLOB CONFIG_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/config/*.h")
+file(COPY ${CONFIG_HEADERS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+
 #include dirs
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})

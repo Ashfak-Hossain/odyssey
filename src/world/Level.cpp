@@ -143,8 +143,8 @@ void Level::buildBackground(const string& theme) {
 
   {
     ParallaxLayer sky(BACKGROUND_LAYER_1_SPEED);
-    sky.bands.push_back({350, (float)WINDOW_HEIGHT, p.skyTopR, p.skyTopG, p.skyTopB});
-    sky.bands.push_back({(float)GROUND_SURFACE_Y, 350, p.skyBotR, p.skyBotG, p.skyBotB});
+    sky.bands.push_back({HORIZON_Y, (float)WINDOW_HEIGHT, p.skyTopR, p.skyTopG, p.skyTopB});
+    sky.bands.push_back({(float)GROUND_SURFACE_Y, HORIZON_Y, p.skyBotR, p.skyBotG, p.skyBotB});
     bgLayers.push_back(sky);
   }
 }
@@ -182,9 +182,9 @@ void Level::renderExit(bool locked) const {
     return;
 
   if (locked) {
-    glColor3f(0.8f, 0.1f, 0.1f);
+    glColor3f(EXIT_LOCKED_FILL_R, EXIT_LOCKED_FILL_G, EXIT_LOCKED_FILL_B);
   } else {
-    glColor3f(0.1f, 0.8f, 0.1f);
+    glColor3f(EXIT_UNLOCKED_FILL_R, EXIT_UNLOCKED_FILL_G, EXIT_UNLOCKED_FILL_B);
   }
   glBegin(GL_QUADS);
   glVertex2f(exitDoor.x, exitDoor.y);
@@ -194,11 +194,11 @@ void Level::renderExit(bool locked) const {
   glEnd();
 
   if (locked) {
-    glColor3f(0.5f, 0.05f, 0.05f);
+    glColor3f(EXIT_LOCKED_BORDER_R, EXIT_LOCKED_BORDER_G, EXIT_LOCKED_BORDER_B);
   } else {
-    glColor3f(0.05f, 0.5f, 0.05f);
+    glColor3f(EXIT_UNLOCKED_BORDER_R, EXIT_UNLOCKED_BORDER_G, EXIT_UNLOCKED_BORDER_B);
   }
-  glLineWidth(3.0f);
+  glLineWidth(EXIT_BORDER_LINE_WIDTH);
   glBegin(GL_LINE_LOOP);
   glVertex2f(exitDoor.x, exitDoor.y);
   glVertex2f(exitDoor.x + exitDoor.width, exitDoor.y);

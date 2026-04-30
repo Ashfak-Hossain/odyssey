@@ -11,18 +11,18 @@ void HUD::render(float /*screenW*/, float screenH) const {
   glPushMatrix();
   glLoadIdentity();
 
-  // health squares
-  float squareSize = 20.0f;
-  float startX     = 10.0f;
-  float squareY    = screenH - 30.0f;  // 30px from top
+  // --- health squares ---
+  float squareSize = HUD_HEALTH_SQUARE_SIZE;
+  float startX     = HUD_LEFT_PAD;
+  float squareY    = screenH - HUD_TOP_PAD;
 
   for (int i = 0; i < Player::MAX_HEALTH; i++) {
     if (i < player.health) {
-      glColor3f(0.9f, 0.15f, 0.15f);  // red = alive
+      glColor3f(HUD_HEALTH_ALIVE_R, HUD_HEALTH_ALIVE_G, HUD_HEALTH_ALIVE_B);
     } else {
-      glColor3f(0.25f, 0.25f, 0.25f);  // dark gray = lost
+      glColor3f(HUD_HEALTH_LOST_R, HUD_HEALTH_LOST_G, HUD_HEALTH_LOST_B);
     }
-    float sx = startX + i * (squareSize + 8.0f);
+    float sx = startX + i * (squareSize + HUD_HEALTH_SPACING);
     glBegin(GL_QUADS);
     glVertex2f(sx, squareY);
     glVertex2f(sx + squareSize, squareY);
@@ -31,24 +31,25 @@ void HUD::render(float /*screenW*/, float screenH) const {
     glEnd();
   }
 
-  // key icon (gold quad, right of health squares)
-  float keyX = startX + Player::MAX_HEALTH * (squareSize + 8.0f) + 6.0f;
-  float keyY = squareY + 2.0f;
+  // --- key icon ---
+  float keyX =
+      startX + Player::MAX_HEALTH * (squareSize + HUD_HEALTH_SPACING) + HUD_KEY_ICON_X_OFFSET;
+  float keyY = squareY + HUD_KEY_ICON_Y_OFFSET;
 
   if (player.hasKey) {
-    glColor3f(1.0f, 0.85f, 0.0f);
+    glColor3f(HUD_KEY_ACTIVE_R, HUD_KEY_ACTIVE_G, HUD_KEY_ACTIVE_B);
   } else {
-    glColor3f(0.3f, 0.3f, 0.3f);
+    glColor3f(HUD_KEY_INACTIVE_R, HUD_KEY_INACTIVE_G, HUD_KEY_INACTIVE_B);
   }
   glBegin(GL_QUADS);
   glVertex2f(keyX, keyY);
-  glVertex2f(keyX + 16.0f, keyY);
-  glVertex2f(keyX + 16.0f, keyY + 16.0f);
-  glVertex2f(keyX, keyY + 16.0f);
+  glVertex2f(keyX + HUD_KEY_ICON_SIZE, keyY);
+  glVertex2f(keyX + HUD_KEY_ICON_SIZE, keyY + HUD_KEY_ICON_SIZE);
+  glVertex2f(keyX, keyY + HUD_KEY_ICON_SIZE);
   glEnd();
 
-  // level name text, 4px below the health row
-  float textY = squareY - 18.0f;
+  // --- level name text ---
+  float textY = squareY - HUD_TEXT_Y_OFFSET;
   glColor3f(1.0f, 1.0f, 1.0f);
   glRasterPos2f(startX, textY);
 

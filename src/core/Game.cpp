@@ -12,7 +12,7 @@ Game::Game() : hud(player, levelManager) {
 // ------------------- Init ---------------------
 // ----------------------------------------------
 void Game::init() {
-  glClearColor(0.4, 0.7, 1, 1);  // sky blue background
+  glClearColor(SKY_CLEAR_R, SKY_CLEAR_G, SKY_CLEAR_B, 1.0f);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -87,7 +87,7 @@ void Game::update(float deltaTime) {
   }
 
   // Fall-off damage
-  if (player.y < -100.0f) {
+  if (player.y < FALL_THRESHOLD) {
     player.takeDamage();
     if (player.health <= 0) {
       player.health = Player::MAX_HEALTH;

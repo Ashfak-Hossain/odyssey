@@ -3,14 +3,14 @@
 #include "utils/Platform.h"
 
 Player::Player()
-    : x(100),
+    : x(PLAYER_DEFAULT_START_X),
       y(GROUND_SURFACE_Y),
       vx(0),
       vy(0),
       width(PLAYER_WIDTH),
       height(PLAYER_HEIGHT),
       onGround(true),
-      startX(100),
+      startX(PLAYER_DEFAULT_START_X),
       startY(GROUND_SURFACE_Y) {
 }
 
@@ -24,7 +24,7 @@ Rect Player::getRect() const {
 }
 
 void Player::render() {
-  glColor3f(1.0f, 0.3f, 0.1f);
+  glColor3f(PLAYER_COLOR_R, PLAYER_COLOR_G, PLAYER_COLOR_B);
   glBegin(GL_QUADS);
   glVertex2f(x, y);
   glVertex2f(x + width, y);

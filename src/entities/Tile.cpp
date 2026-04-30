@@ -15,7 +15,7 @@ void Tile::render() const {
   glVertex2f(x, y + height);
   glEnd();
 
-  glColor3f(r * 0.5f, g * 0.5f, b * 0.5f);
+  glColor3f(r * TILE_BORDER_DARKNESS, g * TILE_BORDER_DARKNESS, b * TILE_BORDER_DARKNESS);
   glBegin(GL_LINE_LOOP);
   glVertex2f(x, y);
   glVertex2f(x + width, y);
