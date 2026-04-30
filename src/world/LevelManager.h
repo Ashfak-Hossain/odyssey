@@ -7,11 +7,11 @@
 
 #include "entities/Player.h"
 #include "world/Level.h"
+#include "world/LevelLoader.h"
 
 /**
- * @brief Owns the ordered sequence of levels and manage changing between them.
+ * @brief Controls level sequence and transition logic.
  *
- * Responsibilities:
  * - Maintains the ordered list of level file paths (@ref levelPaths).
  * - Holds the single active @ref Level, loaded from level files on demand.
  * - Shows all states so @ref Game can trigger fade transitions at right place.
@@ -21,6 +21,7 @@ class LevelManager {
  private:
   std::vector<std::string> levelPaths;
   Level                    level;
+  LevelLoader              loader;
   int                      index;     // 0-based index in levelPaths for the active level
   bool                     complete;  // true if all level ar passed
 

@@ -1,11 +1,8 @@
-
 #include "world/LevelManager.h"
 
 #include <iostream>
 
-#include "Config.h"
-
-LevelManager ::LevelManager() : index(0), complete(false) {
+LevelManager::LevelManager() : index(0), complete(false) {
   levelPaths = {
       "levels/level1.txt",
       "levels/level2.txt",
@@ -48,10 +45,10 @@ void LevelManager::resetToFirst(Player& player) {
 }
 
 void LevelManager::loadCurrent(Player& player) {
-  bool canLoad = level.load(levelPaths[index]);
+  bool ok = loader.load(levelPaths[index], level);
 
-  if (!canLoad) {
-    std::cerr << "[LevelManager] failed to load levels\n";
+  if (!ok) {
+    std::cerr << "[LevelManager] failed to load: " << levelPaths[index] << "\n";
   }
 
   player.startX   = level.playerStartX;
