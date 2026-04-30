@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Game.h"
 #include "Platform.h"
 
@@ -41,6 +43,7 @@ void idle() {
   lastTime = currentTime;
 
   game.update(deltaTime);
+  // std::cout << deltaTime << "\n"; // ~0.016
   glutPostRedisplay();
 }
 

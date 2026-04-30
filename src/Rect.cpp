@@ -1,5 +1,7 @@
 #include "Rect.h"
 
+using namespace std;
+
 #include <algorithm>
 
 bool Rect::overlaps(const Rect& other) const {
@@ -10,15 +12,15 @@ bool Rect::overlaps(const Rect& other) const {
 }
 
 float Rect::overlapX(const Rect& other) const {
-  float overlapLeft  = std::max(left(), other.left());
-  float overlapRight = std::min(right(), other.right());
+  float overlapLeft  = max(left(), other.left());
+  float overlapRight = min(right(), other.right());
 
   return overlapRight - overlapLeft;
 }
 
 float Rect::overlapY(const Rect& other) const {
-  float overlapBottom = std::max(bottom(), other.bottom());
-  float overlapTop    = std::min(top(), other.top());
+  float overlapBottom = max(bottom(), other.bottom());
+  float overlapTop    = min(top(), other.top());
 
   return overlapTop - overlapBottom;
 }

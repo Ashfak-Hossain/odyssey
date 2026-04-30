@@ -12,6 +12,12 @@ class Player {
   float height, width;  // size of the player bounding box
   bool  onGround;
 
+  float startX, startY;  // spawn position for this level (Level manager sets this)
+  bool  hasKey = false;
+
+  static constexpr int MAX_HEALTH = 3;
+  int                  health     = MAX_HEALTH;
+
   // returns the bounding box of the player
   Rect getRect() const;
 
@@ -26,6 +32,18 @@ class Player {
   void moveLeft();
   void moveRight();
   void stopMoving();
+
+  /**
+   * @brief
+   * - reset to startX/Y, velocity = 0
+   */
+  void respawn();
+
+  /**
+   * @brief
+   * - lose 1 health and respawn;
+   */
+  void takeDamage();
 };
 
 #endif  // PLAYER_H

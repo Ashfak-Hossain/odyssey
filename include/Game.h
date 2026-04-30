@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Camera.h"
+#include "HUD.h"
 #include "InputManager.h"
 #include "Level.h"
 #include "LevelManager.h"
@@ -11,13 +12,20 @@
 #include "Player.h"
 #include "Tile.h"
 
+enum class GameState { PLAYING, FADING_OUT, FADING_IN };
+
 class Game {
-  Level        level;
   Player       player;
+  LevelManager levelManager;
   Camera       camera;
   Physics      physics;
-  LevelManager levelManager;
   InputManager inputManager;
+  HUD          hud;
+
+  GameState              state           = GameState::PLAYING;
+  float                  transitionAlpha = 0.0f;
+  float                  transitionTimer = 0.0f;
+  static constexpr float FADE_DURATION   = 0.5f;
 
  public:
   Game();
@@ -68,7 +76,7 @@ class Game {
   void handleKeyUp(unsigned char key, int x, int y);
 
   /**
-   * @brief Handle key up events.
+   * @brief Handle key down events.
    *
    * @param key ascii code of key
    * @params x, y = mouse position.
