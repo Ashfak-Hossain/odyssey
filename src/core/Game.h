@@ -5,7 +5,6 @@
 
 #include "core/GameState.h"
 #include "entities/Player.h"
-#include "entities/Tile.h"
 #include "render/BackgroundRenderer.h"
 #include "render/HudRenderer.h"
 #include "render/PlayerRenderer.h"
@@ -13,17 +12,29 @@
 #include "render/TransitionRenderer.h"
 #include "render/WorldRenderer.h"
 #include "systems/Camera.h"
+#include "systems/CollectibleSystem.h"
+#include "systems/InputHandler.h"
 #include "systems/InputManager.h"
 #include "systems/Physics.h"
-#include "world/Level.h"
+#include "systems/ProgressionSystem.h"
+#include "systems/RespawnSystem.h"
+#include "systems/TransitionSystem.h"
 #include "world/LevelManager.h"
 
 class Game {
+  // data
   Player       player;
   LevelManager levelManager;
-  Camera       camera;
-  Physics      physics;
-  InputManager inputManager;
+
+  // systems
+  Camera            camera;
+  Physics           physics;
+  InputManager      inputManager;
+  InputHandler      inputHandler;
+  TransitionSystem  transitionSystem;
+  CollectibleSystem collectibleSystem;
+  RespawnSystem     respawnSystem;
+  ProgressionSystem progressionSystem;
 
   // renderers
   Renderer           renderer;
@@ -32,10 +43,6 @@ class Game {
   BackgroundRenderer backgroundRenderer;
   HudRenderer        hudRenderer;
   TransitionRenderer transitionRenderer;
-
-  GameState state           = GameState::PLAYING;
-  float     transitionAlpha = 0.0f;
-  float     transitionTimer = 0.0f;
 
  public:
   Game();

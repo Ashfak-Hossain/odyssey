@@ -5,7 +5,7 @@
 #include "Config.h"
 #include "utils/Platform.h"
 
-Game::Game() {
+Game::Game() : transitionSystem(levelManager, player) {
 }
 
 // ----------------------------------------------
@@ -32,73 +32,23 @@ void Game::update(float deltaTime) {
     return;
   }
 
-  // Handle transition animation — block gameplay input during fades
-  if (state != GameState::PLAYING) {
-    transitionTimer += deltaTime;
+  transitionSystem.update(deltaTime);
 
-    if (state == GameState::FADING_OUT) {
-      transitionAlpha = transitionTimer / FADE_DURATION;
-      if (transitionAlpha > 1.0f) {
-        transitionAlpha = 1.0f;
-      }
-
-      if (transitionTimer >= FADE_DURATION) {
-        levelManager.advance(player);
-        state           = GameState::FADING_IN;
-        transitionTimer = 0.0f;
-      }
-
-    } else if (state == GameState::FADING_IN) {
-      transitionAlpha = 1.0f - transitionTimer / FADE_DURATION;
-      if (transitionAlpha < 0.0f) {
-        transitionAlpha = 0.0f;
-      }
-
-      if (transitionTimer >= FADE_DURATION) {
-        transitionAlpha = 0.0f;
-        state           = GameState::PLAYING;
-      }
-    }
-
+  if (!transitionSystem.allowsGameplay()) {
     camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
     return;
   }
 
-  // --- Normal gameplay ---
-
-  if (inputManager.isHeld('a') || inputManager.isHeld('A')) {
-    player.moveLeft();
-  } else if (inputManager.isHeld('d') || inputManager.isHeld('D')) {
-    player.moveRight();
-  } else {
-    player.stopMoving();
-  }
+  inputHandler.applyMovement(player, inputManager);
 
   Level& lvl = levelManager.currentLevel();
   physics.update(player, lvl.tiles, deltaTime);
 
-  // Key pickup
-  Rect playerRect = player.getRect();
-  for (auto& key : lvl.keys) {
-    if (!key.collected && playerRect.overlaps(key.getRect())) {
-      key.collected = true;
-      player.hasKey = true;
-    }
-  }
+  collectibleSystem.update(player, lvl.keys);
+  respawnSystem.update(player, levelManager);
 
-  // Fall-off damage
-  if (player.y < FALL_THRESHOLD) {
-    player.takeDamage();
-    if (player.health <= 0) {
-      player.health = Player::MAX_HEALTH;
-      levelManager.resetToFirst(player);
-    }
-  }
-
-  // Level change, use fade animation instead of instant change
-  if (levelManager.shouldAdvance(player)) {
-    state           = GameState::FADING_OUT;
-    transitionTimer = 0.0f;
+  if (progressionSystem.update(player, levelManager)) {
+    transitionSystem.startFade();
   }
 
   camera.update(player.x, player.y, lvl.worldWidth);
@@ -121,7 +71,6 @@ void Game::render() {
 
   worldRenderer.drawTiles(lvl.tiles, renderer);
   worldRenderer.drawKeys(lvl.keys, renderer);
-
   if (lvl.hasExit) {
     worldRenderer.drawExit(lvl.exitDoor, !player.hasKey, renderer);
   }
@@ -132,7 +81,7 @@ void Game::render() {
   hudRenderer.draw(player, levelManager, WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
 
   // Fade overlay — always last
-  transitionRenderer.draw(transitionAlpha, WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
+  transitionRenderer.draw(transitionSystem.getAlpha(), WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
 
   renderer.swapBuffers();
 }
@@ -143,7 +92,7 @@ void Game::render() {
 void Game::handleKeyDown(unsigned char key, int x, int y) {
   inputManager.keyDown(key);
 
-  if (key == ' ' && state == GameState::PLAYING) {
+  if (key == ' ' && transitionSystem.allowsGameplay()) {
     player.jump();
   }
   if (key == 27) {
