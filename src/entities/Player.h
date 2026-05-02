@@ -1,7 +1,13 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <vector>
+
+#include "entities/Key.h"
 #include "entities/Rect.h"
+#include "systems/InputManager.h"
+
+class LevelManager;
 
 class Player {
  public:
@@ -43,6 +49,10 @@ class Player {
    * - lose 1 health and respawn;
    */
   void takeDamage();
+
+  void applyInput(const InputManager& inputManager);
+  void collectKeys(std::vector<Key>& keys);
+  void checkFall(LevelManager& levelManager);
 };
 
 #endif  // PLAYER_H

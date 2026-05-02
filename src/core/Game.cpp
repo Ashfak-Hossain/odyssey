@@ -35,15 +35,15 @@ void Game::update(float deltaTime) {
     return;
   }
 
-  inputHandler.applyMovement(player, inputManager);
+  player.applyInput(inputManager);
 
   Level& lvl = levelManager.currentLevel();
   physics.update(player, lvl.tiles, deltaTime);
 
-  collectibleSystem.update(player, lvl.keys);
-  respawnSystem.update(player, levelManager);
+  player.collectKeys(lvl.keys);
+  player.checkFall(levelManager);
 
-  if (progressionSystem.update(player, levelManager)) {
+  if (levelManager.shouldAdvance(player)) {
     transitionSystem.startFade();
   }
 

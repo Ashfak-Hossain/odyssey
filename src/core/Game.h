@@ -12,12 +12,8 @@
 #include "render/TransitionRenderer.h"
 #include "render/WorldRenderer.h"
 #include "systems/Camera.h"
-#include "systems/CollectibleSystem.h"
-#include "systems/InputHandler.h"
 #include "systems/InputManager.h"
 #include "systems/Physics.h"
-#include "systems/ProgressionSystem.h"
-#include "systems/RespawnSystem.h"
 #include "systems/TransitionSystem.h"
 #include "world/LevelManager.h"
 
@@ -27,14 +23,10 @@ class Game {
   LevelManager levelManager;
 
   // systems
-  Camera            camera;
-  Physics           physics;
-  InputManager      inputManager;
-  InputHandler      inputHandler;
-  TransitionSystem  transitionSystem;
-  CollectibleSystem collectibleSystem;
-  RespawnSystem     respawnSystem;
-  ProgressionSystem progressionSystem;
+  Camera           camera;
+  Physics          physics;
+  InputManager     inputManager;
+  TransitionSystem transitionSystem;
 
   // renderers
   Renderer           renderer;
