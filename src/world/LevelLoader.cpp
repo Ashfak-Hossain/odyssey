@@ -52,8 +52,9 @@ bool LevelLoader::load(const string& levelFilePath, Level& level) const {
 
     if (token == "name") {
       getline(ss, level.name);
-      if (!level.name.empty() && level.name[0] == ' ')
+      if (!level.name.empty() && level.name[0] == ' ') {
         level.name = level.name.substr(1);
+      }
       continue;
     }
 

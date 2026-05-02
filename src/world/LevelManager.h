@@ -19,11 +19,11 @@
  */
 class LevelManager {
  private:
-  std::vector<std::string> levelPaths;
-  Level                    level;
-  LevelLoader              loader;
-  int                      index;     // 0-based index in levelPaths for the active level
-  bool                     complete;  // true if all level ar passed
+  std::vector<std::string> levelPaths;  // path of the levels (declared in construction)
+  Level                    level;       // hold all static data in a level.
+  LevelLoader              loader;      // Loads a Level from a .txt file
+  int                      index;       // 0-based index in levelPaths for the active level
+  bool                     complete;    // true if all level ar passed
 
   /**
    * @brief Loads levelPaths[index] into @ref level and resets the player to the spawn point.

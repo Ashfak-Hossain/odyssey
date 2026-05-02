@@ -5,45 +5,20 @@
 
 Game game;
 
-void display() {
-  game.render();
-}
-
 /**
- * @brief handles key press events.
- */
-void keyboard(unsigned char key, int x, int y) {
-  game.handleKeyDown(key, x, y);
-}
-
-/**
- * @brief handles key release events.
- */
-void keyboardUp(unsigned char key, int x, int y) {
-  game.handleKeyUp(key, x, y);
-}
-
-/**
- * @brief update game logic at a fixed time and request a redraw.
- * This idle function runs continuously when no other events are being processed. so we can see the
- * objects running smoothly. if the game runs in 60fps, the deltaTime will be around 0.016s.
+ * @brief GLUT idle callback that handles the game loop.
  *
- * @note The static lastTime variable persists across calls to maintain accurate deltaTime.
- * @note Relies on global 'game' object for state updates.
+ * Invoked continuously by GLUT whenever no OS events are pending.
+ * Computes the wall-clock delta since the last call, advances game logic, then
+ * schedules a redisplay.
  */
 void idle() {
   float static lastTime = glutGet(GLUT_ELAPSED_TIME);
   float currentTime     = glutGet(GLUT_ELAPSED_TIME);
-  float deltaTime       = (currentTime - lastTime) / 1000.0f;
-
-  if (deltaTime > 0.05f) {
-    deltaTime = 0.05f;
-  }
-
-  lastTime = currentTime;
+  float deltaTime       = std::min((currentTime - lastTime) / 1000.0f, 0.05f);  // ~0.016
+  lastTime              = currentTime;
 
   game.update(deltaTime);
-  // std::cout << deltaTime << "\n"; // ~0.016
   glutPostRedisplay();
 }
 
@@ -59,10 +34,10 @@ int main(int argc, char** argv) {
 
   game.init();
 
-  glutDisplayFunc(display);
+  glutDisplayFunc([]() { game.render(); });
   glutIdleFunc(idle);
-  glutKeyboardFunc(keyboard);
-  glutKeyboardUpFunc(keyboardUp);
+  glutKeyboardFunc([](unsigned char key, int x, int y) { game.handleKeyDown(key, x, y); });
+  glutKeyboardUpFunc([](unsigned char key, int x, int y) { game.handleKeyUp(key, x, y); });
 
   glutMainLoop();
 

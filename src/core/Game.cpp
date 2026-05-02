@@ -8,9 +8,7 @@
 Game::Game() : transitionSystem(levelManager, player) {
 }
 
-// ----------------------------------------------
 // ------------------- Init ---------------------
-// ----------------------------------------------
 void Game::init() {
   glClearColor(SKY_CLEAR_R, SKY_CLEAR_G, SKY_CLEAR_B, 1.0f);
 
@@ -21,12 +19,10 @@ void Game::init() {
   glLoadIdentity();
 
   levelManager.init(player);
-  camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
+  camera.update(player.x, levelManager.currentLevel().worldWidth);
 }
 
-// ----------------------------------------------
 // ------------------- Update -------------------
-// ----------------------------------------------
 void Game::update(float deltaTime) {
   if (levelManager.isComplete()) {
     return;
@@ -35,7 +31,7 @@ void Game::update(float deltaTime) {
   transitionSystem.update(deltaTime);
 
   if (!transitionSystem.allowsGameplay()) {
-    camera.update(player.x, player.y, levelManager.currentLevel().worldWidth);
+    camera.update(player.x, levelManager.currentLevel().worldWidth);
     return;
   }
 
@@ -51,12 +47,10 @@ void Game::update(float deltaTime) {
     transitionSystem.startFade();
   }
 
-  camera.update(player.x, player.y, lvl.worldWidth);
+  camera.update(player.x, lvl.worldWidth);
 }
 
-// ----------------------------------------------
 // ------------------- Render -------------------
-// ----------------------------------------------
 void Game::render() {
   renderer.clearScreen();
 
@@ -69,6 +63,7 @@ void Game::render() {
   renderer.loadIdentity();
   camera.applyTransform();
 
+  // darawing objects in world coords
   worldRenderer.drawTiles(lvl.tiles, renderer);
   worldRenderer.drawKeys(lvl.keys, renderer);
   if (lvl.hasExit) {
@@ -86,9 +81,7 @@ void Game::render() {
   renderer.swapBuffers();
 }
 
-// ----------------------------------------------
 // ------------------- KeyDown ------------------
-// ----------------------------------------------
 void Game::handleKeyDown(unsigned char key, int x, int y) {
   inputManager.keyDown(key);
 
@@ -100,9 +93,7 @@ void Game::handleKeyDown(unsigned char key, int x, int y) {
   }
 }
 
-// ----------------------------------------------
 // ------------------- KeyUp --------------------
-// ----------------------------------------------
 void Game::handleKeyUp(unsigned char key, int x, int y) {
   inputManager.keyUp(key);
 }

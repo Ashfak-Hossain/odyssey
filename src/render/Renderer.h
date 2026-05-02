@@ -9,6 +9,10 @@
  */
 class Renderer {
  public:
+  /**
+   * @brief Clears color buffer (glClear(GL_COLOR_BUFFER_BIT)).
+   * - fills pixels with background color from glClearColor() @ref Game::init().
+   */
   void clearScreen() const;
   void swapBuffers() const;
 
@@ -17,6 +21,8 @@ class Renderer {
 
   void pushMatrix() const;
   void popMatrix() const;
+
+  // load identity matrix before any matrix transformation
   void loadIdentity() const;
   void translate(float x, float y) const;
 

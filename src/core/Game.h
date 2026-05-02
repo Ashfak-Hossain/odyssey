@@ -52,11 +52,11 @@ class Game {
    * sets up:
    * - clear color to sky blue
    * - Orthographic projection
-   * - LevelManager with player spawning
+   * - LevelManager initialize level with player spawning
    * - Initial camera position on player
    *   - this is for not getting the snap on the first frame
    *
-   * @pre Must be called once before game loop starts
+   * @note Must be called once before game loop starts
    */
   void init();
 

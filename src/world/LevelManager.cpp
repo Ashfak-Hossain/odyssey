@@ -9,12 +9,14 @@ LevelManager::LevelManager() : index(0), complete(false) {
   };
 }
 
+// --------------- init ---------------
 void LevelManager::init(Player& player) {
   index    = 0;
   complete = false;
   loadCurrent(player);
 }
 
+// --------------- should advance ---------------
 bool LevelManager::shouldAdvance(const Player& player) const {
   if (complete || !level.hasExit) {
     return false;
@@ -23,6 +25,7 @@ bool LevelManager::shouldAdvance(const Player& player) const {
   return go;
 }
 
+// --------------- advance ---------------
 void LevelManager::advance(Player& player) {
   if (complete) {
     return;
@@ -38,16 +41,18 @@ void LevelManager::advance(Player& player) {
   }
 }
 
+// --------------- resetToFirst ---------------
 void LevelManager::resetToFirst(Player& player) {
   index    = 0;
   complete = false;
   loadCurrent(player);
 }
 
+// --------------- loadCurrent ---------------
 void LevelManager::loadCurrent(Player& player) {
-  bool ok = loader.load(levelPaths[index], level);
+  bool loaded = loader.load(levelPaths[index], level);
 
-  if (!ok) {
+  if (!loaded) {
     std::cerr << "[LevelManager] failed to load: " << levelPaths[index] << "\n";
   }
 
@@ -61,18 +66,22 @@ void LevelManager::loadCurrent(Player& player) {
   player.hasKey   = false;
 }
 
+// --------------- currentLevel ---------------
 Level& LevelManager::currentLevel() {
   return level;
 }
 
+// --------------- currentLevel static ---------------
 const Level& LevelManager::currentLevel() const {
   return level;
 }
 
+// --------------- isComplete ---------------
 bool LevelManager::isComplete() const {
   return complete;
 }
 
+// --------------- current ---------------
 int LevelManager::currentIndex() const {
   return index;
 }

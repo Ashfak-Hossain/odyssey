@@ -1,5 +1,7 @@
 #include "systems/Camera.h"
 
+#include <algorithm>
+
 #include "Config.h"
 #include "utils/Platform.h"
 
@@ -10,36 +12,11 @@
 Camera::Camera() : x(0), y(0) {
 }
 
-/**
- * @brief update the camera position based on the player position.
- * - The camera will keep the player at the `CAMERA_PLAYER_OFFSET_X` from the left of the screen.
- * - The camera will not go beyond the world `left` and `right` edges.
- * - The camera y is fixed at `0` because we only have horizontal movement in this game.
- *
- * @param playerX
- * @param playerY
- */
-void Camera::update(float playerX, float playerY, float worldWidth) {
-  // the camera x is always keep the player at the camera offset
-  x = playerX - CAMERA_PLAYER_OFFSET_X;
-
-  // cant go beyond the world left edge
-  if (x < 0) {
-    x = 0;
-  }
-
-  // cant go beyond the world right edge
-  float maxX = worldWidth - WINDOW_WIDTH;
-
-  if (maxX < 0) {
-    maxX = 0;
-  }
-
-  if (x > maxX) {
-    x = maxX;
-  }
-
-  y = 0;
+// -------------- update --------------
+void Camera::update(float playerX, float worldWidth) {
+  float max_x = std::max(worldWidth - WINDOW_WIDTH, 0.0f);
+  x           = std::clamp(playerX - CAMERA_PLAYER_OFFSET_X, 0.0f, max_x);
+  y           = 0;
 }
 
 /**

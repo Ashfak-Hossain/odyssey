@@ -11,7 +11,17 @@ class Camera {
   float x, y;
 
   Camera();
-  void update(float playerX, float playerY, float worldWidth);
+
+  /**
+   * @brief update the camera position based on the player position.
+   * - The camera will keep the player at the `CAMERA_PLAYER_OFFSET_X` from the left of the screen.
+   * - max-x = max coords of camera in x.
+   * - clamps the camera-x in between [0, max-x]
+   *
+   * @param playerX x position of the player
+   * @param worldWidth width of the world
+   */
+  void update(float playerX, float worldWidth);
 
   void applyTransform() const;
 
