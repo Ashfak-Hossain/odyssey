@@ -86,3 +86,15 @@ void Renderer::loadIdentity() const {
 void Renderer::translate(float x, float y) const {
   glTranslatef(x, y, 0.0f);
 }
+
+void Renderer::drawTransition(float alpha, float screenW, float screenH) const {
+  if (alpha <= 0.0f) {
+    return;
+  }
+  pushMatrix();
+  loadIdentity();
+  enableBlending();
+  drawQuadAlpha(0.0f, 0.0f, screenW, screenH, 0.0f, 0.0f, 0.0f, alpha);
+  disableBlending();
+  popMatrix();
+}

@@ -76,7 +76,7 @@ void Game::render() {
   hudRenderer.draw(player, levelManager, WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
 
   // Fade overlay — always last
-  transitionRenderer.draw(transitionSystem.getAlpha(), WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
+  renderer.drawTransition(transitionSystem.getAlpha(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
   renderer.swapBuffers();
 }

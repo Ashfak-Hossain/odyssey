@@ -9,7 +9,6 @@
 #include "render/HudRenderer.h"
 #include "render/PlayerRenderer.h"
 #include "render/Renderer.h"
-#include "render/TransitionRenderer.h"
 #include "render/WorldRenderer.h"
 #include "systems/Camera.h"
 #include "systems/InputManager.h"
@@ -34,7 +33,6 @@ class Game {
   WorldRenderer      worldRenderer;
   BackgroundRenderer backgroundRenderer;
   HudRenderer        hudRenderer;
-  TransitionRenderer transitionRenderer;
 
  public:
   Game();

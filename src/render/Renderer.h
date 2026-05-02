@@ -59,6 +59,12 @@ class Renderer {
    * @brief Draw a bitmap string at world position (x, y).
    */
   void drawText(float x, float y, const std::string& text, float r, float g, float b) const;
+
+  /**
+   * @brief Draws a full-screen black fade overlay.
+   * alpha = 0 is invisible, 1 is fully black.
+   */
+  void drawTransition(float alpha, float screenW, float screenH) const;
 };
 
 #endif  // RENDERER_H
