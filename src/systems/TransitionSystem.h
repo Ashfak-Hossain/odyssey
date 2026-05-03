@@ -6,7 +6,7 @@
 #include "world/LevelManager.h"
 
 /**
- * @brief manage the fade (FADING_OUT → advance level → FADING_IN → PLAYING).
+ * @brief manage the fade (PLAYING -> FADING_OUT → advance level → FADING_IN → PLAYING).
  *
  * Call startFade() to trigger a transition.
  * Call update(dt) every frame — it updates and calls levelManager.advance at the midpoint.

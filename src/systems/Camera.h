@@ -2,13 +2,13 @@
 #define CAMERA_H
 
 /**
- * @brief This Class represents the camera in the game. The camera showed a part of the world of the
- * game. Like if the camera.x = 100 and the window width is 800 then the window show the world form
- * 100 to 900. The camera moves with the player within world range.
+ * @brief This Class represents the camera in the game. Visible range of the world.
+ * If camera.x = 100 and window width is 800, the visible world range is [100, 900].
+ * Camera tracks the player within world bounds.
  */
 class Camera {
  public:
-  float x, y;
+  float x, y;  // bottom-left corner of the camera
 
   Camera();
 
@@ -23,9 +23,28 @@ class Camera {
    */
   void update(float playerX, float worldWidth);
 
+  /**
+   * @brief apply the camera transform to the scene.
+   * - This will translate the scene by (-camera.x, -camera.y) to create the camera effect.
+   *
+   *@note should be called before rendering the objects.
+   */
   void applyTransform() const;
 
+  /**
+   * @brief convert world coordinate to screen coordinate
+   *
+   * @param worldX the x coordinate in the world space
+   * @return float the x coordinate in the screen space
+   */
   float worldToScreenX(float worldX) const;
+
+  /**
+   * @brief convert world coordinate to screen coordinate
+   *
+   * @param worldY the y coordinate in the world space
+   * @return float the y coordinate in the screen space
+   */
   float worldToScreenY(float worldY) const;
 };
 

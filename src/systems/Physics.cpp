@@ -34,11 +34,6 @@ void Physics::update(Player& player, const std::vector<Tile>& tiles, float delta
   }
 }
 
-/**
- * @brief Resolve collision on the X-axis.
- *
- * @param tile The tile to check collision with.
- */
 void Physics::resolveX(Player& player, const Tile& tile) {
   Rect playerRect = player.getRect();
   Rect tileRect   = tile.getRect();
@@ -61,11 +56,6 @@ void Physics::resolveX(Player& player, const Tile& tile) {
   player.vx = 0;
 }
 
-/**
- * @brief Resolve collision on the Y-axis.
- *
- * @param tile The tile to check collision with.
- */
 void Physics::resolveY(Player& player, const Tile& tile) {
   Rect playerRect = player.getRect();
   Rect tileRect   = tile.getRect();

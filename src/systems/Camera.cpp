@@ -5,10 +5,6 @@
 #include "Config.h"
 #include "utils/Platform.h"
 
-/**
- * @brief Construct a new Camera:: Camera object
- * - Initialize the camera position at (0, 0)
- */
 Camera::Camera() : x(0), y(0) {
 }
 
@@ -19,32 +15,17 @@ void Camera::update(float playerX, float worldWidth) {
   y           = 0;
 }
 
-/**
- * @brief apply the camera transform to the scene.
- * - This will translate the scene by (-camera.x, -camera.y) to create the camera effect.
- *
- *@note should be called before rendering the objects.
- */
+// -------------- translate --------------
 void Camera::applyTransform() const {
   glTranslatef(-x, -y, 0);
 }
 
-/**
- * @brief convert world coordinate to screen coordinate by applying the camera transform.
- *
- * @param worldX the x coordinate in the world space
- * @return float the x coordinate in the screen space
- */
+// -------------- world to screen X --------------
 float Camera::worldToScreenX(float worldX) const {
   return worldX - x;
 }
 
-/**
- * @brief convert world coordinate to screen coordinate by applying the camera transform.
- *
- * @param worldY the y coordinate in the world space
- * @return float the y coordinate in the screen space
- */
+// -------------- world to screen Y --------------
 float Camera::worldToScreenY(float worldY) const {
   return worldY - y;
 }
