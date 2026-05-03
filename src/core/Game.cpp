@@ -78,7 +78,7 @@ void Game::render() {
   // HUD — screen space
   hudRenderer.draw(player, levelManager, WINDOW_WIDTH, WINDOW_HEIGHT, renderer);
 
-  // Fade overlay — always last
+  // Fade overlay
   renderer.drawTransition(transitionSystem.getAlpha(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
   renderer.swapBuffers();

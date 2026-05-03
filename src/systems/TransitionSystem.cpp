@@ -7,6 +7,7 @@ TransitionSystem::TransitionSystem(LevelManager& levelManager, Player& player)
 }
 
 void TransitionSystem::update(float deltaTime) {
+  // Nothing to do while state is playing
   if (state == GameState::PLAYING) {
     return;
   }
@@ -14,23 +15,27 @@ void TransitionSystem::update(float deltaTime) {
   transitionTimer += deltaTime;
 
   if (state == GameState::FADING_OUT) {
+    // transitionAlpha increases from 0 → 1 in FADE_DURATION seconds.
     transitionAlpha = transitionTimer / FADE_DURATION;
     if (transitionAlpha > 1.0f) {
       transitionAlpha = 1.0f;
     }
 
+    // change level at full dark overlay
     if (transitionTimer >= FADE_DURATION) {
       levelManager.advance(player);
       state           = GameState::FADING_IN;
-      transitionTimer = 0.0f;
+      transitionTimer = 0.0f;  // restart timer for the fade-in phase
     }
 
   } else if (state == GameState::FADING_IN) {
+    // transitionAlpha decreases from 1 → 0 over FADE_DURATION seconds.
     transitionAlpha = 1.0f - transitionTimer / FADE_DURATION;
     if (transitionAlpha < 0.0f) {
       transitionAlpha = 0.0f;
     }
 
+    // Fade complete — return to play
     if (transitionTimer >= FADE_DURATION) {
       transitionAlpha = 0.0f;
       state           = GameState::PLAYING;
@@ -39,9 +44,6 @@ void TransitionSystem::update(float deltaTime) {
 }
 
 void TransitionSystem::startFade() {
-  if (state != GameState::PLAYING) {
-    return;
-  }
   state           = GameState::FADING_OUT;
   transitionTimer = 0.0f;
 }
