@@ -24,7 +24,6 @@ class LevelLoader {
   /**
    * @brief Parse levelFilePath (relative to assets/) and populate level.
    * Clears all existing level data before loading.
-   *  -
    *
    * @param levelFilePath path relative to assets/ dir ("levels/level1.txt")
    * @param level         Level object to populate
