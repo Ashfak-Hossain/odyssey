@@ -11,6 +11,10 @@ struct Key {
   float x, y, width, height;
   bool  collected = false;
 
+  /**
+   * @brief Get the Rect object
+   * @return Rect
+   */
   Rect getRect() const;
 };
 

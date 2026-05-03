@@ -41,7 +41,10 @@ void Game::update(float deltaTime) {
   physics.update(player, lvl.tiles, deltaTime);
 
   player.collectKeys(lvl.keys);
-  player.checkFall(levelManager);
+  if (player.checkFall() && player.health <= 0) {
+    player.health = Player::MAX_HEALTH;
+    levelManager.resetToFirst(player);
+  }
 
   if (levelManager.shouldAdvance(player)) {
     transitionSystem.startFade();

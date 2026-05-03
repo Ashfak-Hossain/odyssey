@@ -2,7 +2,6 @@
 
 #include "Config.h"
 #include "PhysicsConfig.h"
-#include "world/LevelManager.h"
 
 Player::Player()
     : x(PLAYER_DEFAULT_START_X),
@@ -21,7 +20,6 @@ void Player::applyGravity(float deltaTime) {
 }
 
 Rect Player::getRect() const {
-  // x, y = bottom-left corner
   return {x, y, width, height};
 }
 
@@ -78,12 +76,10 @@ void Player::collectKeys(std::vector<Key>& keys) {
   }
 }
 
-void Player::checkFall(LevelManager& levelManager) {
+bool Player::checkFall() {
   if (y < FALL_THRESHOLD) {
     takeDamage();
-    if (health <= 0) {
-      health = MAX_HEALTH;
-      levelManager.resetToFirst(*this);
-    }
+    return true;
   }
+  return false;
 }
