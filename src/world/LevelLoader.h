@@ -31,13 +31,6 @@ class LevelLoader {
    */
   bool load(const std::string& levelFilePath, Level& level) const;
 
- private:
-  /**
-   * @brief Build parallax background layers into level.bgLayers based on theme.
-   * @param theme  ocean | desert | mountain | jungle
-   * @param level  Level to write bgLayers into
-   */
-  void buildBackground(const std::string& theme, Level& level) const;
 };
 
 #endif  // LEVEL_LOADER_H

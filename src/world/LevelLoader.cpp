@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 
-#include "Config.h"
 #include "utils/PathUtils.h"
 
 using namespace std;
@@ -26,7 +25,6 @@ bool LevelLoader::load(const string& levelFilePath, Level& level) const {
   level.hasExit = false;
 
   string section = "none";
-  string theme   = "ocean";
   string line;
 
   while (getline(file, line)) {
@@ -62,10 +60,6 @@ bool LevelLoader::load(const string& levelFilePath, Level& level) const {
       ss >> level.worldWidth;
       continue;
     }
-    if (token == "theme") {
-      ss >> theme;
-      continue;
-    }
     if (token == "start") {
       ss >> level.playerStartX >> level.playerStartY;
       continue;
@@ -97,31 +91,7 @@ bool LevelLoader::load(const string& levelFilePath, Level& level) const {
     }
   }
 
-  buildBackground(theme, level);
-
   cout << "[LevelLoader] Loaded: " << level.name << " (" << level.tiles.size() << " tiles)\n";
 
   return true;
-}
-
-void LevelLoader::buildBackground(const string& theme, Level& level) const {
-  struct Palette {
-    float skyTopR, skyTopG, skyTopB;
-    float skyBotR, skyBotG, skyBotB;
-    float midR, midG, midB;
-    float nearR, nearG, nearB;
-  };
-
-  Palette p = {};  // zero-initialised — fallback if theme not matched
-
-  if (theme == "desert") {
-    p = {0.85f, 0.60f, 0.30f, 0.95f, 0.80f, 0.50f, 0.70f, 0.50f, 0.25f, 0.55f, 0.38f, 0.18f};
-  } else if (theme == "mountain") {
-    p = {0.55f, 0.65f, 0.80f, 0.75f, 0.82f, 0.90f, 0.50f, 0.50f, 0.55f, 0.35f, 0.38f, 0.40f};
-  }
-
-  ParallaxLayer sky(BACKGROUND_LAYER_1_SPEED);
-  sky.bands.push_back({HORIZON_Y, (float)WINDOW_HEIGHT, p.skyTopR, p.skyTopG, p.skyTopB});
-  sky.bands.push_back({(float)GROUND_SURFACE_Y, HORIZON_Y, p.skyBotR, p.skyBotG, p.skyBotB});
-  level.bgLayers.push_back(sky);
 }

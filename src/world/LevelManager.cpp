@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "world/BackgroundThemes.h"
+
 LevelManager::LevelManager() : index(0), complete(false) {
   levelPaths = {
       "levels/level1.txt",
@@ -55,6 +57,8 @@ void LevelManager::loadCurrent(Player& player) {
   if (!loaded) {
     std::cerr << "[LevelManager] failed to load: " << levelPaths[index] << "\n";
   }
+
+  BackgroundThemes::build(index, level.bgLayers);
 
   player.startX   = level.playerStartX;
   player.startY   = level.playerStartY;
