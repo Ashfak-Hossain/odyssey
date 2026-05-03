@@ -1,0 +1,359 @@
+@startuml
+package [src] as C_0004254791246011317936 {
+package [entities] as C_0012276144655136766486 {
+class "vector<Key>" as C_0017444263993981051740
+class C_0017444263993981051740 {
+__
+}
+class "Tile" as C_0017934950449762797625
+class C_0017934950449762797625 {
++getRect() const : Rect
+__
++b : float
++g : float
++height : float
++r : float
++width : float
++x : float
++y : float
+}
+class "Rect" as C_0005632588847866437681
+class C_0005632588847866437681 {
++bottom() const : float
++centerX() const : float
++centerY() const : float
++left() const : float
++overlapX(const Rect & other) const : float
++overlapY(const Rect & other) const : float
++overlaps(const Rect & other) const : bool
++right() const : float
++top() const : float
+__
++height : float
++width : float
++x : float
++y : float
+}
+class "Key" as C_0002653233355703911760
+class C_0002653233355703911760 {
++getRect() const : Rect
+__
++collected : bool
++height : float
++width : float
++x : float
++y : float
+}
+class "Player" as C_0002266570548022005113
+class C_0002266570548022005113 {
++Player() : void
+..
++applyGravity(float deltaTime) : void
++applyInput(const InputManager & inputManager) : void
++checkFall(LevelManager & levelManager) : void
++collectKeys(std::vector<Key> & keys) : void
++getRect() const : Rect
++jump() : void
++moveLeft() : void
++moveRight() : void
++respawn() : void
++stopMoving() : void
++takeDamage() : void
+__
+{static} +MAX_HEALTH : const int
++hasKey : bool
++health : int
++height : float
++onGround : bool
++startX : float
++startY : float
++vx : float
++vy : float
++width : float
++x : float
++y : float
+}
+}
+package [core] as C_0015912987664345477167 {
+enum "GameState" as C_0018077852919137909338
+enum C_0018077852919137909338 {
+PLAYING
+FADING_IN
+FADING_OUT
+}
+class "Game" as C_0005063145795877447127
+class C_0005063145795877447127 {
++Game() : void
+..
++handleKeyDown(unsigned char key, int x, int y) : void
++handleKeyUp(unsigned char key, int x, int y) : void
++init() : void
++render() : void
++update(float deltaTime) : void
+__
+-backgroundRenderer : BackgroundRenderer
+-camera : Camera
+-hudRenderer : HudRenderer
+-inputManager : InputManager
+-levelManager : LevelManager
+-physics : Physics
+-player : Player
+-playerRenderer : PlayerRenderer
+-renderer : Renderer
+-transitionRenderer : TransitionRenderer
+-transitionSystem : TransitionSystem
+-worldRenderer : WorldRenderer
+}
+}
+package [systems] as C_0005914803353287000557 {
+class "Camera" as C_0004052717682392972265
+class C_0004052717682392972265 {
++Camera() : void
+..
++applyTransform() const : void
++update(float playerX, float worldWidth) : void
++worldToScreenX(float worldX) const : float
++worldToScreenY(float worldY) const : float
+__
++x : float
++y : float
+}
+class "TransitionSystem" as C_0006730724812503934928
+class C_0006730724812503934928 {
++TransitionSystem(LevelManager & levelManager, Player & player) : void
+..
++allowsGameplay() const : bool
++getAlpha() const : float
++startFade() : void
++update(float deltaTime) : void
+__
+-levelManager : LevelManager &
+-player : Player &
+-state : GameState
+-transitionAlpha : float
+-transitionTimer : float
+}
+class "Physics" as C_0016038061330718993598
+class C_0016038061330718993598 {
+-resolveX(Player & player, const Tile & tile) : void
+-resolveY(Player & player, const Tile & tile) : void
++update(Player & player, const std::vector<Tile> & tiles, float deltaTime) : void
+__
+}
+class "InputManager" as C_0011669938963890891209
+class C_0011669938963890891209 {
++InputManager() : void
+..
++isHeld(unsigned char key) const : bool
++keyDown(unsigned char key) : void
++keyUp(unsigned char key) : void
+__
+-keys : bool[256]
+}
+}
+package [render] as C_0009210497615715153679 {
+class "basic_string<char>" as C_0015070288861779828488
+class C_0015070288861779828488 {
+__
+}
+class "vector<ParallaxLayer>" as C_0015708029367520107208
+class C_0015708029367520107208 {
+__
+}
+class "BackgroundRenderer" as C_0000026813078603395352
+class C_0000026813078603395352 {
++draw(const std::vector<ParallaxLayer> & layers, float cameraX, const Renderer & renderer) const : void
+__
+}
+class "WorldRenderer" as C_0003266643335081414925
+class C_0003266643335081414925 {
++drawExit(const Rect & exitDoor, bool locked, const Renderer & renderer) const : void
++drawKeys(const std::vector<Key> & keys, const Renderer & renderer) const : void
++drawTiles(const std::vector<Tile> & tiles, const Renderer & renderer) const : void
+__
+}
+class "HudRenderer" as C_0007900332051177743703
+class C_0007900332051177743703 {
++draw(const Player & player, const LevelManager & levelManager, float screenW, float screenH, const Renderer & renderer) const : void
+__
+}
+class "TransitionRenderer" as C_0014518862924346503197
+class C_0014518862924346503197 {
++draw(float alpha, float screenW, float screenH, const Renderer & renderer) const : void
+__
+}
+class "Renderer" as C_0000719782658363410525
+class C_0000719782658363410525 {
++clearScreen() const : void
++disableBlending() const : void
++drawQuad(float x, float y, float w, float h, float r, float g, float b) const : void
++drawQuadAlpha(float x, float y, float w, float h, float r, float g, float b, float a) const : void
++drawQuadOutline(float x, float y, float w, float h, float r, float g, float b, float lineWidth = 1.0f) const : void
++drawText(float x, float y, const std::string & text, float r, float g, float b) const : void
++drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, float r, float g, float b) const : void
++enableBlending() const : void
++loadIdentity() const : void
++popMatrix() const : void
++pushMatrix() const : void
++swapBuffers() const : void
++translate(float x, float y) const : void
+__
+}
+class "PlayerRenderer" as C_0011441465038940654612
+class C_0011441465038940654612 {
++draw(const Player & player, const Renderer & renderer) const : void
+__
+}
+}
+package [world] as C_0014845110178727046923 {
+class "vector<ColorBand>" as C_0004924893739622058985
+class C_0004924893739622058985 {
+__
+}
+class "vector<Triangle>" as C_0006614628000410422842
+class C_0006614628000410422842 {
+__
+}
+class "vector<Tile>" as C_0009052705392512418503
+class C_0009052705392512418503 {
+__
+}
+class "vector<std::string>" as C_0009022090272135344009
+class C_0009022090272135344009 {
+__
+}
+class "ColorBand" as C_0008766754063843992709
+class C_0008766754063843992709 {
+__
++b : float
++g : float
++r : float
++yBottom : float
++yTop : float
+}
+class "Triangle" as C_0005594963476246212821
+class C_0005594963476246212821 {
+__
++b : float
++g : float
++r : float
++x1 : float
++x2 : float
++x3 : float
++y1 : float
++y2 : float
++y3 : float
+}
+class "ParallaxLayer" as C_0011142304648953482416
+class C_0011142304648953482416 {
++ParallaxLayer(float factor) : void
+__
++bands : std::vector<ColorBand>
++scrollFactor : float
++shapes : std::vector<Triangle>
+}
+class "Level" as C_0011040976304371883275
+class C_0011040976304371883275 {
+__
++bgLayers : std::vector<ParallaxLayer>
++exitDoor : Rect
++hasExit : bool
++keys : std::vector<Key>
++name : std::string
++playerStartX : float
++playerStartY : float
++tiles : std::vector<Tile>
++worldWidth : float
+}
+class "LevelLoader" as C_0002492723062576384478
+class C_0002492723062576384478 {
+-buildBackground(const std::string & theme, Level & level) const : void
++load(const std::string & levelFilePath, Level & level) const : bool
+__
+}
+class "LevelManager" as C_0000245231767540557665
+class C_0000245231767540557665 {
++LevelManager() : void
+..
++advance(Player & player) : void
++currentIndex() const : int
++currentLevel() : Level &
++currentLevel() const : const Level &
++init(Player & player) : void
++isComplete() const : bool
+-loadCurrent(Player & player) : void
++resetToFirst(Player & player) : void
++shouldAdvance(const Player & player) const : bool
+__
+-complete : bool
+-index : int
+-level : Level
+-levelPaths : std::vector<std::string>
+-loader : LevelLoader
+}
+}
+}
+C_0017444263993981051740 ..> C_0002653233355703911760
+C_0017934950449762797625 ..> C_0005632588847866437681
+C_0002653233355703911760 ..> C_0005632588847866437681
+C_0002266570548022005113 ..> C_0005632588847866437681
+C_0002266570548022005113 ..> C_0011669938963890891209
+C_0002266570548022005113 ..> C_0017444263993981051740
+C_0002266570548022005113 ..> C_0002653233355703911760
+C_0002266570548022005113 ..> C_0000245231767540557665
+C_0005063145795877447127 o-- C_0002266570548022005113 : -player
+C_0005063145795877447127 o-- C_0000245231767540557665 : -levelManager
+C_0005063145795877447127 o-- C_0004052717682392972265 : -camera
+C_0005063145795877447127 o-- C_0016038061330718993598 : -physics
+C_0005063145795877447127 o-- C_0011669938963890891209 : -inputManager
+C_0005063145795877447127 o-- C_0006730724812503934928 : -transitionSystem
+C_0005063145795877447127 o-- C_0000719782658363410525 : -renderer
+C_0005063145795877447127 o-- C_0011441465038940654612 : -playerRenderer
+C_0005063145795877447127 o-- C_0003266643335081414925 : -worldRenderer
+C_0005063145795877447127 o-- C_0000026813078603395352 : -backgroundRenderer
+C_0005063145795877447127 o-- C_0007900332051177743703 : -hudRenderer
+C_0005063145795877447127 o-- C_0014518862924346503197 : -transitionRenderer
+C_0006730724812503934928 --> C_0000245231767540557665 : -levelManager
+C_0006730724812503934928 --> C_0002266570548022005113 : -player
+C_0006730724812503934928 o-- C_0018077852919137909338 : -state
+C_0016038061330718993598 ..> C_0002266570548022005113
+C_0016038061330718993598 ..> C_0009052705392512418503
+C_0016038061330718993598 ..> C_0017934950449762797625
+C_0015708029367520107208 ..> C_0011142304648953482416
+C_0000026813078603395352 ..> C_0015708029367520107208
+C_0000026813078603395352 ..> C_0011142304648953482416
+C_0000026813078603395352 ..> C_0000719782658363410525
+C_0003266643335081414925 ..> C_0009052705392512418503
+C_0003266643335081414925 ..> C_0017934950449762797625
+C_0003266643335081414925 ..> C_0000719782658363410525
+C_0003266643335081414925 ..> C_0017444263993981051740
+C_0003266643335081414925 ..> C_0002653233355703911760
+C_0003266643335081414925 ..> C_0005632588847866437681
+C_0007900332051177743703 ..> C_0002266570548022005113
+C_0007900332051177743703 ..> C_0000245231767540557665
+C_0007900332051177743703 ..> C_0000719782658363410525
+C_0014518862924346503197 ..> C_0000719782658363410525
+C_0000719782658363410525 ..> C_0015070288861779828488
+C_0011441465038940654612 ..> C_0002266570548022005113
+C_0011441465038940654612 ..> C_0000719782658363410525
+C_0004924893739622058985 ..> C_0008766754063843992709
+C_0006614628000410422842 ..> C_0005594963476246212821
+C_0009052705392512418503 ..> C_0017934950449762797625
+C_0009022090272135344009 ..> C_0015070288861779828488
+C_0011142304648953482416 o-- C_0004924893739622058985 : +bands
+C_0011142304648953482416 o-- C_0006614628000410422842 : +shapes
+C_0011040976304371883275 o-- C_0009052705392512418503 : +tiles
+C_0011040976304371883275 o-- C_0017444263993981051740 : +keys
+C_0011040976304371883275 o-- C_0015708029367520107208 : +bgLayers
+C_0011040976304371883275 o-- C_0015070288861779828488 : +name
+C_0011040976304371883275 o-- C_0005632588847866437681 : +exitDoor
+C_0002492723062576384478 ..> C_0015070288861779828488
+C_0002492723062576384478 ..> C_0011040976304371883275
+C_0000245231767540557665 ..> C_0002266570548022005113
+C_0000245231767540557665 o-- C_0009022090272135344009 : -levelPaths
+C_0000245231767540557665 o-- C_0011040976304371883275 : -level
+C_0000245231767540557665 o-- C_0002492723062576384478 : -loader
+
+'Generated with clang-uml, version 0.6.2
+'LLVM version Homebrew clang version 21.1.8
+@enduml

@@ -1,0 +1,22 @@
+/**
+ * @file Config.h.in
+ * @brief Configuration header template for the Odyssey project.
+ * This file is processed by CMake to generate a Config.h file in the build dir.
+ * It defines constants used in the project.
+ */
+
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define PLATFORM_@PLATFORM_NAME@ 1
+
+#include "CameraConfig.h"
+#include "ColorPalette.h"
+#include "HudConfig.h"
+#include "PhysicsConfig.h"
+#include "PlayerConfig.h"
+#include "TransitionConfig.h"
+#include "WindowConfig.h"
+#include "WorldConfig.h"
+
+#endif  // CONFIG_H
