@@ -9,7 +9,7 @@
 struct Rect {
   float x, y, width, height;
 
-  // edges
+  // Edges
   float left() const {
     return x;
   }
@@ -23,7 +23,7 @@ struct Rect {
     return y;
   }
 
-  // center
+  // Center
   float centerX() const {
     return x + width / 2.0f;
   }

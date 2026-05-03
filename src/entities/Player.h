@@ -8,7 +8,6 @@
 #include "systems/InputManager.h"
 
 /**
- * @class Player
  * @brief This is the character in the game.
  */
 class Player {
