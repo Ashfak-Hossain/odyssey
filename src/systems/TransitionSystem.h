@@ -20,6 +20,7 @@ class TransitionSystem {
 
  public:
   TransitionSystem(LevelManager& levelManager, Player& player);
+  float getAlpha() const;
 
   /**
    * @brief start fading if state is not `GameState::PLAYING`
@@ -39,15 +40,6 @@ class TransitionSystem {
    * @return false: if game is not in `PLAYING` state
    */
   bool allowsGameplay() const;
-
-  // Current overlay opacity [0, 1]; fed to Renderer::drawTransition() each frame.
-  /**
-   * @brief get the current overlay opacity [0, 1].
-   *   - used in `renderer.drawTransition()`
-   *
-   * @return float: current transitionAlpha value
-   */
-  float getAlpha() const;
 };
 
 #endif  // TRANSITION_SYSTEM_H

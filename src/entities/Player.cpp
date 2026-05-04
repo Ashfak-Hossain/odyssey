@@ -67,13 +67,17 @@ void Player::applyInput(const InputManager& inputManager) {
 }
 
 void Player::collectKeys(std::vector<Key>& keys) {
-  Rect playerRect = getRect();
+  Rect playerRect   = getRect();
+  bool allCollected = true;
   for (auto& key : keys) {
     if (!key.collected && playerRect.overlaps(key.getRect())) {
       key.collected = true;
-      hasKey        = true;
+    }
+    if (!key.collected) {
+      allCollected = false;
     }
   }
+  hasKey = allCollected;
 }
 
 bool Player::checkFall() {
