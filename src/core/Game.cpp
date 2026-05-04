@@ -12,9 +12,12 @@ Game::Game() : transitionSystem(levelManager, player) {
 void Game::init() {
   glClearColor(SKY_CLEAR_R, SKY_CLEAR_G, SKY_CLEAR_B, 1.0f);
 
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LEQUAL);
+
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
+  glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1000, 1000);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 

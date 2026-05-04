@@ -3,7 +3,7 @@
 #include "utils/Platform.h"
 
 void Renderer::clearScreen() const {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::swapBuffers() const {
