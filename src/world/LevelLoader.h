@@ -13,7 +13,6 @@
  * Text file format:
  *   name    <string>
  *   width   <float>
- *   theme   ocean | desert | mountain | jungle
  *   start   <x> <y>
  *   tiles   (section header, followed by rows: x y w h r g b)
  *   exit    x y w h
@@ -30,7 +29,6 @@ class LevelLoader {
    * @return true  on success, false if file cannot be opened
    */
   bool load(const std::string& levelFilePath, Level& level) const;
-
 };
 
 #endif  // LEVEL_LOADER_H
