@@ -3,6 +3,7 @@ project(Odyssey)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Platform Specific
 if(APPLE)
@@ -20,22 +21,26 @@ find_package(GLUT REQUIRED)
 
 # genearate config file in build dir
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/Config.h.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/config/Config.h.in"
   "${CMAKE_CURRENT_BINARY_DIR}/Config.h"
 )
+
+# Copy config headers into build dir so Config.h can #include them
+file(GLOB CONFIG_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/config/*.h")
+file(COPY ${CONFIG_HEADERS} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 #include dirs
 include_directories(include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # all source files
-file(GLOB SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_executable(odyssey ${SOURCES})
 
 # private include path for the game itself
 target_include_directories(odyssey PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"   
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"   
     "${CMAKE_CURRENT_BINARY_DIR}"           
 )
 

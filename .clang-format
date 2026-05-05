@@ -33,9 +33,11 @@ AlignConsecutiveDeclarations: true
 AlignConsecutiveMacros: true
 
 # Function and parameter
-AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: true
 BinPackParameters: false
 BinPackArguments: false
+PenaltyReturnTypeOnItsOwnLine: 200
+ContinuationIndentWidth: 4
 
 AlwaysBreakAfterReturnType: None
 AlwaysBreakAfterDefinitionReturnType: None
