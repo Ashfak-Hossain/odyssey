@@ -6,6 +6,7 @@
 
 LevelManager::LevelManager() : index(0), complete(false) {
   levelPaths = {
+      "levels/level4.txt",
       "levels/level1.txt",
       "levels/level2.txt",
       "levels/level3.txt",

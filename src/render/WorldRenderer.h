@@ -14,6 +14,8 @@
  */
 class WorldRenderer {
  public:
+  float keyAngle = 0.0f;
+
   /**
    * @brief Draw tiles in the world coords
    *
@@ -27,8 +29,9 @@ class WorldRenderer {
    *
    * @param keys list of keys to draw
    * @param renderer renderer method
+   * @param deltaTime Time elapsed since the last frame update(in seconds).
    */
-  void drawKeys(const std::vector<Key>& keys, const Renderer& renderer) const;
+  void drawKeys(const std::vector<Key>& keys, const Renderer& renderer, float deltaTime);
 
   /**
    * @brief
@@ -38,6 +41,36 @@ class WorldRenderer {
    * @param renderer
    */
   void drawExit(const Rect& exitDoor, bool locked, const Renderer& renderer) const;
+
+ private:
+  static void drawKeyBox(float hw, float hh, float hd);
+  static void drawKeyFace(float r,
+                          float g,
+                          float b,
+                          float x0,
+                          float y0,
+                          float z0,
+                          float x1,
+                          float y1,
+                          float z1,
+                          float x2,
+                          float y2,
+                          float z2,
+                          float x3,
+                          float y3,
+                          float z3);
+  static void drawKeyFaceOutline(float x0,
+                                 float y0,
+                                 float z0,
+                                 float x1,
+                                 float y1,
+                                 float z1,
+                                 float x2,
+                                 float y2,
+                                 float z2,
+                                 float x3,
+                                 float y3,
+                                 float z3);
 };
 
 #endif  // WORLD_RENDERER_H

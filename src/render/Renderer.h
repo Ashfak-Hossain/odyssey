@@ -24,7 +24,23 @@ class Renderer {
 
   // load identity matrix before any matrix transformation
   void loadIdentity() const;
-  void translate(float x, float y) const;
+
+  void translate(float x, float y) const;                     // 2D
+  void translate(float x, float y, float z) const;            // 3D
+  void rotate(float angle, float x, float y, float z) const;  // 3D
+
+  /**
+   * @brief draw a point with (r, g, b)
+   * x, y - point
+   */
+  void drawPixel(float x, float y, float r, float g, float b) const;
+
+  /**
+   * @brief draw line with mid point line algorithm
+   *  x, y - point
+   * r, g, b - color
+   */
+  void drawMidpointLine(int x0, int y0, int x1, int y1, float r, float g, float b) const;
 
   /**
    * @brief draw a quad filled with (r, g, b) color.
