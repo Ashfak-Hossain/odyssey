@@ -20,6 +20,7 @@ class Game {
   // data
   Player       player;
   LevelManager levelManager;
+  float        lastDeltaTime = 0.0f;  // for 3d keys dt
 
   // systems
   Camera           camera;

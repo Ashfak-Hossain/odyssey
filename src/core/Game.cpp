@@ -54,6 +54,7 @@ void Game::update(float deltaTime) {
   }
 
   camera.update(player.x, lvl.worldWidth);
+  lastDeltaTime = deltaTime;
 }
 
 // ------------------- Render -------------------
@@ -71,7 +72,7 @@ void Game::render() {
 
   // darawing objects in world coords
   worldRenderer.drawTiles(lvl.tiles, renderer);
-  worldRenderer.drawKeys(lvl.keys, renderer);
+  worldRenderer.drawKeys(lvl.keys, renderer, lastDeltaTime);
   if (lvl.hasExit) {
     worldRenderer.drawExit(lvl.exitDoor, !player.hasKey, renderer);
   }
