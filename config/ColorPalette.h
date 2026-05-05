@@ -36,14 +36,6 @@ constexpr float EXIT_UNLOCKED_FILL_R = 0.10f;
 constexpr float EXIT_UNLOCKED_FILL_G = 0.80f;
 constexpr float EXIT_UNLOCKED_FILL_B = 0.10f;
 
-constexpr float EXIT_LOCKED_BORDER_R = 0.50f;
-constexpr float EXIT_LOCKED_BORDER_G = 0.05f;
-constexpr float EXIT_LOCKED_BORDER_B = 0.05f;
-
-constexpr float EXIT_UNLOCKED_BORDER_R = 0.05f;
-constexpr float EXIT_UNLOCKED_BORDER_G = 0.50f;
-constexpr float EXIT_UNLOCKED_BORDER_B = 0.05f;
-
 constexpr float EXIT_BORDER_LINE_WIDTH = 3.0f;
 
 // ── Sky clear color (glClearColor) ───────────────────────

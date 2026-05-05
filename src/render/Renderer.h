@@ -27,6 +27,19 @@ class Renderer {
   void translate(float x, float y) const;
 
   /**
+   * @brief draw a point with (r, g, b)
+   * x, y - point
+   */
+  void drawPixel(float x, float y, float r, float g, float b) const;
+
+  /**
+   * @brief draw line with mid point line algorithm
+   *  x, y - point
+   * r, g, b - color
+   */
+  void drawMidpointLine(int x0, int y0, int x1, int y1, float r, float g, float b) const;
+
+  /**
    * @brief draw a quad filled with (r, g, b) color.
    * x, y - bottom-lect corner of the box
    * w, h - height and width of the box
