@@ -27,29 +27,25 @@ void Renderer::drawPixel(float x, float y, float r, float g, float b) const {
 }
 
 void Renderer::drawMidpointLine(int x0, int y0, int x1, int y1, float r, float g, float b) const {
-  int dx  = std::abs(x1 - x0);
-  int dy  = std::abs(y1 - y0);
-  int sx  = (x0 < x1) ? 1 : -1;
-  int sy  = (y0 < y1) ? 1 : -1;
-  int err = dx - dy;
+  int dx    = std::abs(x1 - x0);
+  int dy    = std::abs(y1 - y0);
+  int stepX = (x0 < x1) ? 1 : -1;
+  int stepY = (y0 < y1) ? 1 : -1;
+  int error = dx - dy;
 
-  while (true) {
+  while (x0 != x1 || y0 != y1) {
     drawPixel(x0, y0, r, g, b);
-
-    if (x0 == x1 && y0 == y1) {
-      break;
+    int err2 = 2 * error;
+    if (err2 > -dy) {
+      error -= dy;
+      x0 += stepX;
     }
-
-    int e2 = 2 * err;
-    if (e2 > -dy) {
-      err -= dy;
-      x0 += sx;
-    }
-    if (e2 < dx) {
-      err += dx;
-      y0 += sy;
+    if (err2 < dx) {
+      error += dx;
+      y0 += stepY;
     }
   }
+  drawPixel(x1, y1, r, g, b);
 }
 
 void Renderer::drawQuad(float x, float y, float w, float h, float r, float g, float b) const {
@@ -118,6 +114,14 @@ void Renderer::loadIdentity() const {
 
 void Renderer::translate(float x, float y) const {
   glTranslatef(x, y, 0.0f);
+}
+
+void Renderer::translate(float x, float y, float z) const {
+  glTranslatef(x, y, z);
+}
+
+void Renderer::rotate(float angle, float x, float y, float z) const {
+  glRotatef(angle, x, y, z);
 }
 
 void Renderer::drawTransition(float alpha, float screenW, float screenH) const {

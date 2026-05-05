@@ -24,7 +24,10 @@ class Renderer {
 
   // load identity matrix before any matrix transformation
   void loadIdentity() const;
-  void translate(float x, float y) const;
+
+  void translate(float x, float y) const;                     // 2D
+  void translate(float x, float y, float z) const;            // 3D
+  void rotate(float angle, float x, float y, float z) const;  // 3D
 
   /**
    * @brief draw a point with (r, g, b)
