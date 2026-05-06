@@ -48,6 +48,30 @@ void Renderer::drawMidpointLine(int x0, int y0, int x1, int y1, float r, float g
   drawPixel(x1, y1, r, g, b);
 }
 
+void Renderer::drawMidpointCircle(int cx, int cy, int radius, float r, float g, float b) const {
+  int x = 0;
+  int y = radius;
+  int p = 1 - radius;
+
+  while (x <= y) {
+    drawPixel(cx + x, cy + y, r, g, b);
+    drawPixel(cx - x, cy + y, r, g, b);
+    drawPixel(cx + x, cy - y, r, g, b);
+    drawPixel(cx - x, cy - y, r, g, b);
+    drawPixel(cx + y, cy + x, r, g, b);
+    drawPixel(cx - y, cy + x, r, g, b);
+    drawPixel(cx + y, cy - x, r, g, b);
+    drawPixel(cx - y, cy - x, r, g, b);
+    x++;
+    if (p < 0) {
+      p += 2 * x + 1;
+    } else {
+      y--;
+      p += 2 * (x - y) + 1;
+    }
+  }
+}
+
 void Renderer::drawQuad(float x, float y, float w, float h, float r, float g, float b) const {
   glColor3f(r, g, b);
   glBegin(GL_QUADS);

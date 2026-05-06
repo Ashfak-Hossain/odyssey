@@ -43,6 +43,14 @@ class Renderer {
   void drawMidpointLine(int x0, int y0, int x1, int y1, float r, float g, float b) const;
 
   /**
+   * @brief draw circle outline using the midpoint circle algorithm
+   * cx, cy - center;
+   * radius - circle radius;
+   * r, g, b - color
+   */
+  void drawMidpointCircle(int cx, int cy, int radius, float r, float g, float b) const;
+
+  /**
    * @brief draw a quad filled with (r, g, b) color.
    * x, y - bottom-lect corner of the box
    * w, h - height and width of the box

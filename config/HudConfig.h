@@ -1,9 +1,10 @@
 #ifndef HUD_CONFIG_H
 #define HUD_CONFIG_H
 
-// Health squares
-constexpr float HUD_HEALTH_SQUARE_SIZE = 20.0f;  // width and height of each health square
-constexpr float HUD_HEALTH_SPACING     = 8.0f;   // gap of health squares
+// Health orbs
+constexpr float HUD_HEALTH_SQUARE_SIZE = 20.0f;   // layout cell size (kept for spacing math)
+constexpr float HUD_HEALTH_RADIUS      = 10;      // radius of each health circle
+constexpr float HUD_HEALTH_SPACING     = 8.0f;    // gap between health orbs
 constexpr float HUD_LEFT_PAD           = 10.0f;  // distance from left edge of screen
 constexpr float HUD_TOP_PAD            = 30.0f;  // distance from top edge of screen
 
