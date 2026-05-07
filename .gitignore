@@ -549,5 +549,6 @@ FodyWeavers.xsd
 
 /docs/hidden
 *e.md
+.*e
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,macos,windows,git,cmake,c++,codeblocks,visualstudio
